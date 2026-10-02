@@ -59,38 +59,24 @@
   /* --------------------------------------------------------------------------
    * 图片地址的版本号 —— 解决「换了图片但网站还是显示旧的」
    *
-   * GitHub Pages 给所有静态文件固定返回 cache-control: max-age=600，而且**没法覆盖**。
-   * 所以如果你换了一张图、文件名没变（比如还是 banner-header.webp），
-   * 浏览器和 CDN 会一直拿缓存里那张旧图，最多 10 分钟都不更新。
+   * 关键设计：**每张图各自一个版本号**（后台维护，存在 SITE_CONFIG.imageVer 里）。
    *
-   * 办法：所有图片地址后面挂一个 ?v=<内容版本>。版本一变，地址就变，
-   * 浏览器才会当成新资源去取。版本号来自 config.js 里的 SITE_CONFIG.contentRev
-   * （后台每次发布/换图都会把它往前推）。
+   * 为什么不是「所有图共用一个版本号」：
+   *   共用的话，你发布一次内容 → 版本号变了 → 浏览器会把这 2MB 多的图**全部重新下一次**，
+   *   哪怕你只改了一个字。实测过，页面下载量直接翻倍。
+   *   各自一个版本号之后，只有你真正换过的那张图地址会变，其它图继续吃浏览器缓存。
    * ------------------------------------------------------------------------ */
-  var assetVer = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG && SITE_CONFIG.contentRev) || '';
 
-  /* 图片地址的版本号 = 内容版本 + 「10 分钟一格」的时间片。
-   *
-   * 为什么还要加时间片：
-   *   有些浏览器和内置 WebView（**微信、QQ、钉钉里打开的那种**）并不老实遵守
-   *   cache-control。你把图换掉了，它还是把旧图摁在本地缓存里不撒手，
-   *   表现就是「我这台电脑已经看到了，客户/同事手机上还是旧的」。
-   *   加上时间片之后，图片地址每 10 分钟必定变一次，这些浏览器也只能去取新图。
-   *
-   * 为什么不会因此多下载：GitHub Pages 自己给的缓存就是 10 分钟（max-age=600），
-   *   所以时间片的节奏和它完全一致 —— 不多下，只是把「不听话的浏览器」也一起兜住。
-   *
-   * 另外：这个版本号在**渲染那一刻**才算，页面开着不动、内容也没变的话不会重绘，
-   *   所以不会出现「挂着的页面每 10 分钟偷跑一次流量」。 */
-  function liveVer() {
-    var bucket = Math.floor(Date.now() / 3600000);   /* 1 小时一格 */
-    return assetVer ? (assetVer + '.' + bucket) : String(bucket);
+  function imgVerMap() {
+    var m = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG && SITE_CONFIG.imageVer) || {};
+    return (m && typeof m === 'object') ? m : {};
   }
 
   function withVer(src) {
-    if (!src) return src;
-    if (!/^assets\//.test(src)) return src;        /* 外链图片不加 */
-    return src + (src.indexOf('?') >= 0 ? '&' : '?') + 'v=' + liveVer();
+    if (!src || !/^assets\//.test(src)) return src;      /* 外链图片不加 */
+    var v = imgVerMap()[src];
+    if (!v) return src;                                   /* 没登记过就用原地址 */
+    return src + (src.indexOf('?') >= 0 ? '&' : '?') + 'v=' + v;
   }
 
   /* 创建带兜底的图片。
@@ -744,16 +730,10 @@
     if (cfg.UI_TEXT) window.UI_TEXT = cfg.UI_TEXT;
 
     var after = stableJson([SERVICE_CATEGORIES, configSnapshot()]);
-    var contentChanged = (before !== after);
+    if (before === after) return false;   /* 内容没变就不重绘，避免闪一下、也避免白下一遍图 */
 
-    /* 即使文字内容没变，只要版本号往前走了（典型情况：你换了同一张图，
-       内容里的图片路径没变），也要重绘一次 —— 否则浏览器会一直吃 600 秒缓存里的旧图 */
-    var verChanged = String(j.rev) !== String(assetVer);
-
-    if (!contentChanged && !verChanged) return false;
-    if (verChanged) assetVer = j.rev;
-
-    /* 真的变了才重绘。各渲染函数都是「先清空再重建」，可以安全重复调用 */
+    /* 真的变了才重绘。各渲染函数都是「先清空再重建」，可以安全重复调用。
+       没换过的图地址不变，浏览器直接吃缓存，所以重绘不会重新下载它们。 */
     applySiteConfig();
     renderHero();
     renderTabs();
