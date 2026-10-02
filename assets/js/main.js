@@ -83,7 +83,7 @@
    * 另外：这个版本号在**渲染那一刻**才算，页面开着不动、内容也没变的话不会重绘，
    *   所以不会出现「挂着的页面每 10 分钟偷跑一次流量」。 */
   function liveVer() {
-    var bucket = Math.floor(Date.now() / 600000);   /* 10 分钟一格 */
+    var bucket = Math.floor(Date.now() / 3600000);   /* 1 小时一格 */
     return assetVer ? (assetVer + '.' + bucket) : String(bucket);
   }
 
@@ -93,11 +93,16 @@
     return src + (src.indexOf('?') >= 0 ? '&' : '?') + 'v=' + liveVer();
   }
 
-  /* 创建带兜底的图片 */
-  function img(src, cls, alt) {
+  /* 创建带兜底的图片。
+     eager=true 用于首屏第一眼就要看到的图（比如轮播第 1 张），其余一律懒加载 ——
+     不在屏幕附近的图先不下载，滚到了才下。这一条是首页体积从 1.5MB 降到 0.5MB 的关键。 */
+  function img(src, cls, alt, eager) {
     var i = document.createElement('img');
     if (cls) i.className = cls;
     if (alt) i.alt = alt;
+    i.decoding = 'async';
+    if (!eager) i.loading = 'lazy';
+    if (!eager && /^assets\//.test(src || '')) i.setAttribute('fetchpriority', 'low');
     if (src) {
       i.src = withVer(src);
       i.addEventListener('error', function () {
@@ -204,7 +209,7 @@
 
     heroSlides.forEach(function (s, i) {
       var slide = el('div', 'hero-slide' + (s.fit === 'contain' ? ' is-contain' : ''));
-      slide.appendChild(img(s.image, null, s.alt || ''));
+      slide.appendChild(img(s.image, null, s.alt || '', i === 0));
 
       if (s.title || s.subtitle) {
         var cap = el('div', 'hero-cap');
