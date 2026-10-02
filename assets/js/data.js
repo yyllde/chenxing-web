@@ -83,7 +83,7 @@ var SERVICE_CATEGORIES = [
         title: '预存福利',
         subtitle: '',
         image: 'assets/images/deposit-event-01-welfare.png',
-        contentImage: 'assets/images/detail/bc7c0f66cd55435ab1e8845e4b9a481e.webp',
+        contentImage: 'assets/images/detail/bc7c0f66cd55435ab1e8845e4b9a481e.jpg',
         prices: [],
         rule: ''
       }
