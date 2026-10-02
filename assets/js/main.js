@@ -462,13 +462,18 @@
     wrap.appendChild(buildPriceSheet(cat, current));
   }
 
-  /* 海报卡：分类封面做底图，上面叠标题 / 价格盒 / 规则 */
+  /* 海报卡：标题 / 价格盒 / 规则。
+     ⚠️ 2026-10-03 起**不再使用分类封面做底图**（用户要求：主页与详情页都不再出现那张封面图）。
+     所以这里不读 cat.cover；旧数据里残留的 cover 字段只是历史数据，前台完全不展示。
+     想恢复底图：把下面那行 `if (posterBgOn && cat.cover) …` 接回来（图片仍在仓库 assets/images/covers/）。 */
   function buildPoster(cat, item) {
     var content = (typeof CONTENT_CONFIG !== 'undefined' && CONTENT_CONFIG) || {};
 
     var poster = el('div', 'poster anim-up');
 
-    if (cat.cover) poster.appendChild(img(cat.cover, 'poster-bg', ''));
+    /* 逃生开关：内容配置里显式写 posterBg: true 才会显示底图（默认关闭） */
+    var posterBgOn = content.posterBg === true;
+    if (posterBgOn && cat.cover) poster.appendChild(img(cat.cover, 'poster-bg', ''));
 
     var body = el('div', 'poster-body');
 

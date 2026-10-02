@@ -238,11 +238,14 @@
   overflow: hidden;
   margin-bottom: 16px;
   box-shadow: var(--shadow-poster);
-  background: #f0f4f8;
+  /* 2026-10-03：海报卡不再放分类封面底图，底色换成品牌淡渐变
+     （原来是 #f0f4f8 冷灰，那是给「上面压一张图」用的底色，没图时显得脏） */
+  background: linear-gradient(180deg, #fff5fa 0%, #fdf2f8 55%, #f7edfb 100%);
   isolation: isolate;
 }
 
-/* 背景装饰图（分类封面），铺满整张卡 */
+/* 背景装饰图（分类封面）。2026-10-03 起默认不渲染（见 main.js buildPoster 的 posterBg 开关），
+   这条规则保留，方便将来用 posterBg: true 把底图打开。 */
 .poster-bg {
   position: absolute;
   inset: 0;
@@ -252,8 +255,9 @@
   z-index: -1;
 }
 
-/* 内容层：白色蒙版从上方渐隐，保证文字可读又不遮住下方画面
-   （参考站这里用的是绝对定位叠加，内容一多就会溢出；这里改成由内容撑高） */
+/* 内容层：铺满整张卡（由内容撑高）
+   2026-10-03：去掉原来的白色渐隐蒙版 —— 那是为了「白字压在图上也读得清」，
+   现在没有底图了，蒙版只会让卡片下半截变淡、看着像没做完。 */
 .poster-body {
   position: relative;
   min-height: 420px;
@@ -261,11 +265,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: linear-gradient(180deg,
-    rgba(255, 255, 255, .95) 0%,
-    rgba(255, 255, 255, .88) 40%,
-    rgba(255, 255, 255, .18) 68%,
-    rgba(255, 255, 255, 0) 100%);
 }
 
 .poster .p-title {
