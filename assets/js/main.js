@@ -79,18 +79,39 @@
     return src + (src.indexOf('?') >= 0 ? '&' : '?') + 'v=' + v;
   }
 
+  /* 懒加载观察器。
+     为什么不用浏览器自带的 loading="lazy"：它是在**图片插入那一刻**判断位置的，
+     而页面刚渲染时下面的内容还没生成、整页很短，底部那些图会被误判成「在首屏附近」
+     而立刻下载 —— 实测过，一张 463KB 的底部长图照样在首屏就被拉下来了。
+     自己用 IntersectionObserver 判断，位置一定准。rootMargin 留 600px 提前量，
+     滚到之前就下好，不会出现「滚到了才开始加载」的空白感。 */
+  var lazyObserver = (typeof IntersectionObserver !== 'undefined')
+    ? new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        lazyObserver.unobserve(e.target);
+        var s = e.target.getAttribute('data-lazy-src');
+        if (s) { e.target.removeAttribute('data-lazy-src'); e.target.src = s; }
+      });
+    }, { rootMargin: '600px 0px' })
+    : null;
+
   /* 创建带兜底的图片。
-     eager=true 用于首屏第一眼就要看到的图（比如轮播第 1 张），其余一律懒加载 ——
-     不在屏幕附近的图先不下载，滚到了才下。这一条是首页体积从 1.5MB 降到 0.5MB 的关键。 */
+     eager=true 用于首屏第一眼就要看到的图（比如轮播第 1 张），其余一律懒加载。 */
   function img(src, cls, alt, eager) {
     var i = document.createElement('img');
     if (cls) i.className = cls;
     if (alt) i.alt = alt;
     i.decoding = 'async';
-    if (!eager) i.loading = 'lazy';
-    if (!eager && /^assets\//.test(src || '')) i.setAttribute('fetchpriority', 'low');
     if (src) {
-      i.src = withVer(src);
+      var real = withVer(src);
+      if (eager || !lazyObserver) {
+        i.src = real;
+      } else {
+        i.loading = 'lazy';                                  /* 双保险 */
+        i.setAttribute('data-lazy-src', real);
+        lazyObserver.observe(i);
+      }
       i.addEventListener('error', function () {
         if (i.dataset.fallbackApplied) return;
         i.dataset.fallbackApplied = '1';
