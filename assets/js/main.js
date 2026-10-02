@@ -608,6 +608,8 @@
 
     $('sheetWx').textContent = cfg.wechat || '';
     $('sheetCopy').textContent = cfg.copyLabel || '复制微信号';
+    /* 没填微信号就不显示「复制微信号」按钮，免得访客点了毫无反应 */
+    $('sheetCopy').style.display = cfg.wechat ? '' : 'none';
     $('sheetClose').textContent = cfg.closeLabel || '关闭';
 
     $('sheetCopy').addEventListener('click', copyWx);

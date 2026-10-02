@@ -27,7 +27,7 @@ var HERO_CONFIG = {
   slides: [
     {
       image: 'assets/images/banner-header.png',
-      alt: '渡渡鸟电竞价格表',
+      alt: '辰兴电竞价格表',
       title: '',
       subtitle: '',
       fit: 'contain'
@@ -62,7 +62,7 @@ var HERO_CONFIG = {
 /* 三、顶部导航 */
 var NAV_CONFIG = {
   allLabel: '全部',
-  allTitle: '渡渡鸟电竞 · 全部价目'
+  allTitle: '辰兴电竞 · 全部价目'
 };
 
 /* 四、底部固定按钮 */
@@ -84,7 +84,7 @@ var SHEET_CONFIG = {
 
 /* 六、内容区文案 */
 var CONTENT_CONFIG = {
-  posterBrand: '渡渡鸟电竞',
+  posterBrand: '辰兴电竞',
   ruleLabel: '规则',
   defaultRule: '1. 趣味玩法包过点卡、红包、左轮、整理背包。\n' +
     '2. 死亡即炸单，技术订单丢包撤视为撤离失败。\n' +
@@ -106,13 +106,13 @@ var NOTICE_CONFIG = {
 var FOOTER_CONFIG = {
   highlightText: '🎮 一家专注服务、性价比的宝藏俱乐部！',
   serviceFeatures: '✨ 猛男甜妹 / 保驾护航 / 优质陪玩 / 高效售后 / 纯绿',
-  serviceDescription: '💖 如需专属陪玩服务，请到公众号【渡渡鸟电竞】【客服下单】选择【微信点单】，联系客服微信为您量身定制！',
+  serviceDescription: '💖 如需专属陪玩服务，请到公众号【辰兴电竞】【客服下单】选择【微信点单】，联系客服微信为您量身定制！',
   vipService: '🎉 职业选手 / 网红主播专属通道：私信客服，尊享 VIP 预约特权，定制专属电竞体验！',
-  closingText: '💫 渡渡鸟电竞，期待和您一起开黑！',
+  closingText: '💫 辰兴电竞，期待和您一起开黑！',
   contacts: [
     {
       label: '官方公众号',
-      value: '渡渡鸟电竞'
+      value: '辰兴电竞'
     },
     {
       label: '服务时间',
@@ -120,10 +120,10 @@ var FOOTER_CONFIG = {
     }
   ],
   beian: {
-    text: '滇ICP备2025076212号-3',
+    text: '',
     url: 'https://beian.miit.gov.cn/'
   },
-  copyright: 'Copyright © 2026 渡渡鸟电竞 All Rights Reserved'
+  copyright: 'Copyright © 2026 辰兴电竞 All Rights Reserved'
 };
 
 /* 九、交互提示语 */

@@ -118,7 +118,7 @@ var SERVICE_CATEGORIES = [
   },
   {
     id: 'eda583c669ea49bb921b1f7bc079e94b',
-    title: '渡渡鸟纯女端游',
+    title: '辰兴纯女端游',
     subtitle: '',
     cover: 'assets/images/covers/cover-girls-pc.jpg',
     items: [
@@ -151,7 +151,7 @@ var SERVICE_CATEGORIES = [
       },
       {
         id: '86f23346cdd44d9c849472e69c07eb12',
-        title: '渡渡鸟纯女板板须知',
+        title: '辰兴纯女板板须知',
         subtitle: '',
         image: 'assets/images/girls-pc-04-notice.png',
         contentImage: 'assets/images/detail/86f23346cdd44d9c849472e69c07eb12.jpg',
@@ -298,7 +298,7 @@ var SERVICE_CATEGORIES = [
     items: [
       {
         id: '820b2b250ea14a6dae055c33e5156033',
-        title: '渡渡鸟周星好礼',
+        title: '辰兴周星好礼',
         subtitle: '',
         image: 'assets/images/gift-01-weekly-star.png',
         contentImage: 'assets/images/detail/820b2b250ea14a6dae055c33e5156033.jpg',
