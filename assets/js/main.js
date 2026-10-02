@@ -382,19 +382,20 @@
     categories().forEach(function (cat) {
       var card = el('div', 'cat-card');
 
-      /* 圆形封面：显示「点进去之后第一个玩法的价目表大图」（2026-10-03 改）。
-         为什么不再用分类封面图：分类卡本来就是点进去看玩法的入口，
-         圆里放价的目表缩略更贴题；分类封面（covers/*）在后台仍可编辑，只是这张卡不再用它。
-         兜底顺序：第一个玩法的价目表大图 → 第一个有图玩法的任意图 → 分类封面 → 默认头像。 */
+      /* 圆形图取图顺序（2026-10-03 定）：
+         ① 分类自己的「主页圆形图」= cat.cover（后台分类那一层可直接传，用户要的就是这个）
+         ② 没传 → 第一个玩法的价目表大图（兜底，不改动也能看）
+         ③ 还没有 → 第一个有图玩法的任意图
+         ④ 都没有 → 默认头像图 */
       var firstItem = (cat.items || [])[0] || {};
-      var circleSrc = firstItem.contentImage || '';
+      var circleSrc = cat.cover || '';
+      if (!circleSrc) circleSrc = firstItem.contentImage || '';
       if (!circleSrc) {
         (cat.items || []).some(function (it) {
           circleSrc = it.contentImage || it.image || '';
           return !!circleSrc;
         });
       }
-      if (!circleSrc) circleSrc = cat.cover || '';
 
       var cover = el('div', 'cat-card-cover');
       var coverCircle = el('div', 'cat-card-cover-circle');
@@ -947,6 +948,15 @@
     });
 
     syncUrl();
+
+    /* 测试钩子（和 window.CX_LIVE_API 一样是「给测试用的覆盖入口」）：
+       本文件是 IIFE，外面改 window.SERVICE_CATEGORIES 不会触发重绘，
+       所以留一个显式重绘口，验证脚本才能用「构造好的内容」测取图优先级。 */
+    window.CX_RERENDER = function () {
+      renderTabs();
+      renderContent();
+      return true;
+    };
 
     /* 本地静态内容已经在上面渲染完了，现在再异步去云端要最新的 */
     startLivePolling();
