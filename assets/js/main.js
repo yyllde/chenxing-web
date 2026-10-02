@@ -69,10 +69,28 @@
    * ------------------------------------------------------------------------ */
   var assetVer = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG && SITE_CONFIG.contentRev) || '';
 
+  /* 图片地址的版本号 = 内容版本 + 「10 分钟一格」的时间片。
+   *
+   * 为什么还要加时间片：
+   *   有些浏览器和内置 WebView（**微信、QQ、钉钉里打开的那种**）并不老实遵守
+   *   cache-control。你把图换掉了，它还是把旧图摁在本地缓存里不撒手，
+   *   表现就是「我这台电脑已经看到了，客户/同事手机上还是旧的」。
+   *   加上时间片之后，图片地址每 10 分钟必定变一次，这些浏览器也只能去取新图。
+   *
+   * 为什么不会因此多下载：GitHub Pages 自己给的缓存就是 10 分钟（max-age=600），
+   *   所以时间片的节奏和它完全一致 —— 不多下，只是把「不听话的浏览器」也一起兜住。
+   *
+   * 另外：这个版本号在**渲染那一刻**才算，页面开着不动、内容也没变的话不会重绘，
+   *   所以不会出现「挂着的页面每 10 分钟偷跑一次流量」。 */
+  function liveVer() {
+    var bucket = Math.floor(Date.now() / 600000);   /* 10 分钟一格 */
+    return assetVer ? (assetVer + '.' + bucket) : String(bucket);
+  }
+
   function withVer(src) {
-    if (!src || !assetVer) return src;
+    if (!src) return src;
     if (!/^assets\//.test(src)) return src;        /* 外链图片不加 */
-    return src + (src.indexOf('?') >= 0 ? '&' : '?') + 'v=' + assetVer;
+    return src + (src.indexOf('?') >= 0 ? '&' : '?') + 'v=' + liveVer();
   }
 
   /* 创建带兜底的图片 */
@@ -85,7 +103,7 @@
       i.addEventListener('error', function () {
         if (i.dataset.fallbackApplied) return;
         i.dataset.fallbackApplied = '1';
-        i.src = FALLBACK_IMG;
+        i.src = withVer(FALLBACK_IMG);   /* 兜底图也要带版本号，否则它自己会被缓存钉住 */
       });
     }
     return i;
