@@ -18,7 +18,7 @@ var SITE_CONFIG = {
   favicon: 'assets/images/favicon-32.png',
   fallbackImage: 'assets/images/default-avatar.svg',
   background: 'linear-gradient(180deg,#fdf2f8 0%,#ffffff 100%)',
-  contentRev: 28
+  contentRev: 40
 };
 
 /* 二、顶部主视觉轮播 */
@@ -64,12 +64,7 @@ var SHEET_CONFIG = {
 var CONTENT_CONFIG = {
   posterBrand: '辰兴电竞',
   ruleLabel: '规则',
-  defaultRule: '1. 趣味玩法包过点卡、红包、左轮、整理背包。\n' +
-    '2. 死亡即炸单，技术订单丢包撤视为撤离失败。\n' +
-    '3. 带出低于 100 万不计入保底，免费送给老板；高于 100 万但不计入保底的，本局不加炸单保底。\n' +
-    '4. 严禁卡保底，必须比订单规定的保底至少多 30W 才不算卡保底。\n' +
-    '5. 首局不满意 / 前 4 局或中途连续 8 局以上撤离失败，联系客服可免费更换打手。\n' +
-    '6. 所有单子打结默认本单没有问题，投诉售后请在单子结束 24 小时内提出。',
+  defaultRule: '所有单子打结默认本单没有问题，投诉售后请在单子结束 24 小时内提出。',
   viewMoreText: '查看玩法'
 };
 
