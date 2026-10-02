@@ -260,7 +260,9 @@
    现在没有底图了，蒙版只会让卡片下半截变淡、看着像没做完。 */
 .poster-body {
   position: relative;
-  min-height: 420px;
+  /* 2026-10-03：原来的 420px 最小高度是给「底图照片」留的版面；没有底图之后它会空出一大片，
+     改成由内容撑高（价格盒多的玩法自然会长）。 */
+  min-height: 0;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -779,7 +781,7 @@
   .subtabs { padding: 14px; gap: 8px; }
   .subtab { padding: 9px 15px; font-size: 13px; }
   .poster .p-title { font-size: 28px; }
-  .poster-body { min-height: 340px; padding: 16px; }
+  .poster-body { padding: 16px; }   /* 无底图后不再需要为照片留高 */
   .poster .price-box { padding: 10px 14px; }
   .poster .price-box .v { font-size: 24px; }
   .footer-contacts { grid-template-columns: 1fr; }
@@ -827,7 +829,7 @@
   .subtabs { padding: 22px; gap: 12px; }
   .subtab { font-size: 15px; padding: 11px 24px; }
   .poster .p-title { font-size: 42px; }
-  .poster-body { min-height: 460px; padding: 26px; gap: 12px; }
+  .poster-body { min-height: 300px; padding: 26px; gap: 12px; }
   .poster .price-box { padding: 14px 22px; }
   .poster .price-box .v { font-size: 32px; }
   .poster .rule p { font-size: 13px; }
@@ -849,5 +851,5 @@
 /* ---- 横屏矮屏 ---- */
 @media (orientation: landscape) and (max-height: 520px) {
   .hero { aspect-ratio: 24 / 9; }
-  .poster-body { min-height: 280px; }
+  .poster-body { min-height: 0; }
 }
