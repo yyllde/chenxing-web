@@ -646,6 +646,108 @@
   }
 
   /* ==========================================================================
+   * 6.5 实时内容同步 —— 让「发布 → 访客看到」从 663 秒降到 1 秒级
+   * ========================================================================
+   *  问题：GitHub Pages 给所有静态文件固定返回 cache-control: max-age=600，
+   *        已经访问过网站的人，浏览器会把 index.html / data.js / config.js
+   *        缓存整整 10 分钟。所以后台点「发布」之后，老访客最坏要
+   *        63 秒（重建）+ 600 秒（缓存）= 663 秒 才看得到新内容。
+   *
+   *  做法：① 先用本地静态内容秒开（这块完全不受影响；云端挂了也照常显示）
+   *        ② 再异步向云端问一句「有没有更新」，有就把内容换掉重新渲染
+   *        ③ 页面开着时每 10 秒问一次，切回前台时立刻问一次
+   *
+   *  所以这条链路不依赖单一方案：云端不通 → 静默跳过 → 退化成原来的静态站。
+   * ======================================================================== */
+
+  /* 后台地址。测试时可覆盖：window.CX_LIVE_API = 'http://127.0.0.1:8888'
+     传空字符串就等于关掉实时同步。 */
+  var LIVE_API = (typeof window.CX_LIVE_API === 'string')
+    ? window.CX_LIVE_API
+    : 'https://chenxing-admin.pages.dev';
+
+  var liveRev = null;      /* 已经应用过的云端版本号 */
+  var liveBusy = false;
+
+  /* 键名排序后再比较：避免键顺序不同被误判成「内容变了」而白重绘一次 */
+  function stableJson(v) {
+    if (v === null || v === undefined || typeof v !== 'object') return JSON.stringify(v);
+    if (Object.prototype.toString.call(v) === '[object Array]') {
+      return '[' + v.map(stableJson).join(',') + ']';
+    }
+    return '{' + Object.keys(v).sort().map(function (k) {
+      return JSON.stringify(k) + ':' + stableJson(v[k]);
+    }).join(',') + '}';
+  }
+
+  function configSnapshot() {
+    return [SITE_CONFIG, HERO_CONFIG, NAV_CONFIG, CTA_CONFIG,
+            SHEET_CONFIG, CONTENT_CONFIG, NOTICE_CONFIG, FOOTER_CONFIG, UI_TEXT];
+  }
+
+  /* 把云端内容换进来。内容其实没变就返回 false，不重绘 —— 也就不会闪一下 */
+  function applyRemoteContent(j) {
+    var cfg = j.config || {};
+    var before = stableJson([SERVICE_CATEGORIES, configSnapshot()]);
+
+    if (j.data) window.SERVICE_CATEGORIES = j.data;
+    if (cfg.SITE) window.SITE_CONFIG = cfg.SITE;
+    if (cfg.HERO) window.HERO_CONFIG = cfg.HERO;
+    if (cfg.NAV) window.NAV_CONFIG = cfg.NAV;
+    if (cfg.CTA) window.CTA_CONFIG = cfg.CTA;
+    if (cfg.SHEET) window.SHEET_CONFIG = cfg.SHEET;
+    if (cfg.CONTENT) window.CONTENT_CONFIG = cfg.CONTENT;
+    if (cfg.NOTICE) window.NOTICE_CONFIG = cfg.NOTICE;
+    if (cfg.FOOTER) window.FOOTER_CONFIG = cfg.FOOTER;
+    if (cfg.UI_TEXT) window.UI_TEXT = cfg.UI_TEXT;
+
+    var after = stableJson([SERVICE_CATEGORIES, configSnapshot()]);
+    if (before === after) return false;
+
+    /* 真的变了才重绘。各渲染函数都是「先清空再重建」，可以安全重复调用 */
+    applySiteConfig();
+    renderHero();
+    renderTabs();
+    renderContent();
+    renderSiteParts();
+    return true;
+  }
+
+  function syncLive() {
+    if (!LIVE_API || !window.fetch || liveBusy) return;
+    liveBusy = true;
+    fetch(LIVE_API + '/api/public-content?t=' + Date.now(), { cache: 'no-store', mode: 'cors' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        liveBusy = false;
+        if (!j || !j.ok || !j.data || !j.config) return;
+        if (liveRev !== null && String(j.rev) === String(liveRev)) return;   /* 没更新就不动 */
+        liveRev = j.rev;
+        applyRemoteContent(j);
+      })
+      .catch(function () {
+        liveBusy = false;   /* 云端不通 → 静默跳过，页面继续显示静态内容 */
+      });
+  }
+
+  function startLivePolling() {
+    /* 本地双击打开（file://）时不做同步：
+       本地预览就该看本地文件，不该跑去打线上接口 */
+    if (window.location.protocol === 'file:') return;
+    if (!LIVE_API || !window.fetch) return;
+    syncLive();
+    /* 页面开着的时候每 10 秒问一次 —— 这就是「用户感知 ≤10 秒」的保证 */
+    window.setInterval(function () {
+      if (document.visibilityState === 'hidden') return;
+      syncLive();
+    }, 10000);
+    /* 从别的标签页切回来时立刻查一次，不用干等一个轮询周期 */
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') syncLive();
+    });
+  }
+
+  /* ==========================================================================
    * 7. 启动
    * ======================================================================== */
 
@@ -699,6 +801,9 @@
     renderTabs();
     renderContent();
     syncUrl();
+
+    /* 本地静态内容已经在上面渲染完了，现在再异步去云端要最新的 */
+    startLivePolling();
   }
 
   if (document.readyState === 'loading') {
