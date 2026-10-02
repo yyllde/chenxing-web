@@ -18,7 +18,29 @@ var SITE_CONFIG = {
   favicon: 'assets/images/favicon-32.png',
   fallbackImage: 'assets/images/default-avatar.svg',
   background: 'linear-gradient(180deg,#fdf2f8 0%,#ffffff 100%)',
-  contentRev: 60
+  contentRev: 75,
+  imageVer: {
+    'assets/images/banner-header.webp': 72,
+    'assets/images/banner-footer-notice.webp': 72,
+    'assets/images/favicon-32.png': 72,
+    'assets/images/covers/cover-delta-pc.webp': 72,
+    'assets/images/delta-pc-01-hot-fun.webp': 72,
+    'assets/images/detail/e2a76c29dabf4760b9bb426b416e0188.webp': 72,
+    'assets/images/delta-pc-02-new-hot-fun.webp': 72,
+    'assets/images/detail/955db451f862475ba0e17d532fd0a682.webp': 72,
+    'assets/images/delta-pc-03-season-insurance.webp': 72,
+    'assets/images/detail/74bb5694459a408d871ebf5bb2a30917.webp': 72,
+    'assets/images/item-dawang-xunshan.webp': 72,
+    'assets/images/bingo.webp': 72,
+    'assets/images/item-shenmi-heidong.webp': 73,
+    'assets/images/covers/cover-deposit-event.webp': 72,
+    'assets/images/item-yucun-fuli.webp': 74,
+    'assets/images/deposit-event-01-welfare.png': 72,
+    'assets/images/detail/bc7c0f66cd55435ab1e8845e4b9a481e.webp': 72,
+    'assets/images/covers/cover-gift.webp': 72,
+    'assets/images/gift-01-weekly-star.webp': 72,
+    'assets/images/detail/820b2b250ea14a6dae055c33e5156033.webp': 72
+  }
 };
 
 /* 二、顶部主视觉轮播 */
