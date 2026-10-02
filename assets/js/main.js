@@ -795,28 +795,9 @@
    * 7. 启动
    * ======================================================================== */
 
-  function init() {
-    applySiteConfig();
-
-    renderHero();
-    initCta();
-    initSheet();
-    initLightbox();
-    renderSiteParts();
-
-    /* 顶栏箭头 */
-    $('heroPrev').setAttribute('aria-label', txt('heroPrev', '上一张'));
-    $('heroNext').setAttribute('aria-label', txt('heroNext', '下一张'));
-    $('heroPrev').addEventListener('click', function () { showHero(heroIdx - 1, true); });
-    $('heroNext').addEventListener('click', function () { showHero(heroIdx + 1, true); });
-
-    /* Esc：先关图片预览，再关下单弹层 */
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape') return;
-      if ($('lightbox').style.display === 'flex') { closeLightbox(); return; }
-      closeSheet();
-    });
-
+  /* 按地址栏里的 #cat=..&item=.. 切到对应玩法。
+     init 时跑一次；地址栏之后再变（浏览器前进/后退、或点开分享链接）也会再跑。 */
+  function applyHash() {
     /* 支持「分享出去的具体玩法链接」：#cat=<分类id>&item=<条目id>
        也支持直接分享「全部」视图：#cat=all */
     var hasHash = !!(window.location.hash || '').replace(/^#/, '');
@@ -844,6 +825,56 @@
 
     renderTabs();
     renderContent();
+  }
+
+  function init() {
+    applySiteConfig();
+
+    renderHero();
+    initCta();
+    initSheet();
+    initLightbox();
+    renderSiteParts();
+
+    /* 顶栏箭头 */
+    $('heroPrev').setAttribute('aria-label', txt('heroPrev', '上一张'));
+    $('heroNext').setAttribute('aria-label', txt('heroNext', '下一张'));
+    $('heroPrev').addEventListener('click', function () { showHero(heroIdx - 1, true); });
+    $('heroNext').addEventListener('click', function () { showHero(heroIdx + 1, true); });
+
+    /* Esc：先关图片预览，再关下单弹层 */
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if ($('lightbox').style.display === 'flex') { closeLightbox(); return; }
+      closeSheet();
+    });
+
+    applyHash();
+
+    /* 地址栏锚点变了就跟着切过去。
+       以前没有这个监听，导致两个真实问题：
+         · 用浏览器「后退 / 前进」时，地址栏变了但页面内容不变
+         · 已经打开着网站时，点别人发的分享链接（#cat=..&item=..）页面不切换 */
+    window.addEventListener('hashchange', function () {
+      var q = parseHash();
+      var catId = q.cat || ALL;
+      if (catId !== ALL && !findCat(catId)) catId = ALL;
+
+      var item = null;
+      if (catId !== ALL && q.item) {
+        var cat = findCat(catId);
+        var items = (cat && cat.items) || [];
+        for (var i = 0; i < items.length; i++) {
+          if (items[i].id === q.item) item = q.item;
+        }
+      }
+
+      /* 和当前显示的完全一样就不用重画（go() 改地址栏也会触发这个事件，
+         不拦一下会白重绘一次，还会把滚动位置顶回顶部） */
+      if (catId === state.cat && item === state.item) return;
+      applyHash();
+    });
+
     syncUrl();
 
     /* 本地静态内容已经在上面渲染完了，现在再异步去云端要最新的 */
