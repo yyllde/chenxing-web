@@ -24,23 +24,7 @@ var SITE_CONFIG = {
 var HERO_CONFIG = {
   autoplay: true,
   interval: 4000,
-  slides: [
-    {
-      image: 'assets/images/banner-header.png',
-      alt: '辰兴电竞价格表',
-      title: '',
-      subtitle: '',
-      fit: 'contain'
-    },
-    {
-      image: 'assets/images/covers/cover-delta-pc.jpg',
-      alt: '三角洲端游',
-      title: '三角洲端游',
-      subtitle: '体验单 / 小时区 / 基础单 · 爆款趣味玩法',
-      fit: 'cover',
-      toCategory: 'b193a539aad54a1aadf65294bbd9f742'
-    }
-  ]
+  slides: []
 };
 
 /* 三、顶部导航 */
