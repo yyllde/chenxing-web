@@ -382,9 +382,13 @@
     categories().forEach(function (cat) {
       var card = el('div', 'cat-card');
 
-      /* 封面 + 压在封面上的分类名（沿用 dduniao 的粉色渐变条识别） */
+      /* 圆形封面 + 分类名徽章（分类名移出封面，改成圆下徽章 —— 圆形里放不下那条渐变条） */
       var cover = el('div', 'cat-card-cover');
-      if (cat.cover) cover.appendChild(img(cat.cover, null, cat.title));
+      if (cat.cover) {
+        var coverCircle = el('div', 'cat-card-cover-circle');
+        coverCircle.appendChild(img(cat.cover, null, cat.title));
+        cover.appendChild(coverCircle);
+      }
       cover.appendChild(el('div', 'cat-card-name fun', cat.title));
       card.appendChild(cover);
 

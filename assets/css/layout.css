@@ -376,7 +376,8 @@
 .cat-card {
   background: var(--card);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  /* 不要 overflow:hidden —— 圆形封面下要放分类名徽章，裁掉会看不见。
+     卡片内部没有会溢出的元素（圆自身 overflow:hidden 保证「内容不溢出」）。 */
   box-shadow: var(--shadow-card);
   transition: all .2s ease;
 }
@@ -385,30 +386,50 @@
   box-shadow: var(--shadow-poster);
 }
 
+/* ---- 圆形封面（2026-10-03 由方形 16:7 改成圆形） ----
+   做法：外层只做居中，真正的圆形是 .cat-card-cover-circle。
+   - 圆：aspect-ratio:1/1 + width:min(100%,200px) → 永远正圆，任何屏宽都不变形
+   - 图：width/height 100% + object-fit:cover → 铺满圆且不拉伸
+   - 徽章（分类名）放在圆下方，不再压在封面上（圆里放不下那条渐变条） */
 .cat-card-cover {
-  position: relative;
-  aspect-ratio: 16 / 7;
-  overflow: hidden;
-  background: linear-gradient(135deg, #fce7f3, #f3e8ff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 18px;
 }
-.cat-card-cover img {
-  width: 100%;
-  height: 100%;
+.cat-card-cover-circle {
+  width: min(100%, 200px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #fce7f3, #f3e8ff);
+  border: 3px solid var(--card);
+  box-shadow: var(--shadow-soft);
+}
+.cat-card-cover-circle img {
+  /* 图片的 width/height 属性由 JS 按原图比例写成（1024×576），
+     如果不强制覆盖，属性尺寸会参与布局、把圆撑变形。 */
+  width: 100% !important;
+  height: 100% !important;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
-/* 分类名压在封面上（沿用 dduniao 的粉色渐变条视觉识别） */
+/* 分类名徽章：沿用原粉色渐变的视觉识别，只是从「压在封面上」改成「圆下方徽章」 */
 .cat-card-name {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 22px 16px 10px;
-  background: linear-gradient(180deg, rgba(255, 154, 158, 0) 0%, rgba(255, 154, 158, .92) 100%);
+  margin: 10px 14px 0;
+  padding: 5px 16px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, #ff9a9e 0%, #f472b6 100%);
   color: #fff;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 900;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, .18);
+  text-align: center;
+  max-width: 100%;
+  box-shadow: 0 2px 8px rgba(255, 154, 158, .35);
 }
 
 .cat-card-body { padding: 14px 16px 16px; }
@@ -772,8 +793,8 @@
   .hero-cap .t { font-size: 26px; }
   .hero-cap .s { font-size: 13px; }
   .wrap { padding: 20px 18px; }
-  .poster-body { min-height: 400px; }
   .cat-list { grid-template-columns: repeat(2, 1fr); }
+  .cat-card-cover-circle { width: min(100%, 180px); }
 }
 
 /* ---- 桌面（≥1200px）---- */
@@ -807,8 +828,8 @@
   .poster .price-box .v { font-size: 32px; }
   .poster .rule p { font-size: 13px; }
 
-  .cat-list { grid-template-columns: repeat(2, 1fr); }
-  .cat-card-cover { aspect-ratio: 16 / 8; }
+  /* 圆形封面 200px：一屏放 3 张更合适（2 列时卡片宽 450+，圆显小、留白多） */
+  .cat-list { grid-template-columns: repeat(3, 1fr); }
 
   .footer-inner { padding: 32px 28px 26px; }
   .footer-inner p { font-size: 14px; }
