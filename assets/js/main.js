@@ -716,6 +716,9 @@
    *  做法：① 先用本地静态内容秒开（这块完全不受影响；云端挂了也照常显示）
    *        ② 再异步向云端问一句「有没有更新」，有就把内容换掉重新渲染
    *        ③ 页面开着时每 10 秒问一次，切回前台时立刻问一次
+   *           这一步只问轻量的 /api/public-rev（几十字节），
+   *           只有 rev 变了才去拉 /api/public-content（6.6KB 完整内容）。
+   *           后端没有这个端点时自动退回老路径，实时性不退化。
    *
    *  所以这条链路不依赖单一方案：云端不通 → 静默跳过 → 退化成原来的静态站。
    * ======================================================================== */
@@ -774,21 +777,40 @@
     return true;
   }
 
+  /* 拉完整内容（老路径）。首屏、以及「rev 真的变了」时才走这里。 */
+  function fetchFull() {
+    return fetch(LIVE_API + '/api/public-content?t=' + Date.now(), { cache: 'no-store', mode: 'cors' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (!j || !j.ok || !j.data || !j.config) return;
+        liveRev = j.rev;
+        applyRemoteContent(j);
+      });
+  }
+
+  /* 每 10 秒只问「rev 变了没」—— 响应体几十字节。
+     变了才去拉 6.6KB 的完整内容；没变时正文一个字节都不多下。 */
+  function pollRev() {
+    return fetch(LIVE_API + '/api/public-rev?t=' + Date.now(), { cache: 'no-store', mode: 'cors' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        /* 轻量接口不可用（后端还是老版本 / 网络抖动）→ 退回老路径直接拉完整内容，
+           让「≤10 秒生效」这条硬指标在任何情况下都不退化。 */
+        if (!j || !j.ok) return fetchFull();
+        if (liveRev !== null && String(j.rev) === String(liveRev)) return;   /* 没更新就不动 */
+        return fetchFull();
+      });
+  }
+
   function syncLive() {
     if (!LIVE_API || !window.fetch || liveBusy) return;
     liveBusy = true;
-    fetch(LIVE_API + '/api/public-content?t=' + Date.now(), { cache: 'no-store', mode: 'cors' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) {
-        liveBusy = false;
-        if (!j || !j.ok || !j.data || !j.config) return;
-        if (liveRev !== null && String(j.rev) === String(liveRev)) return;   /* 没更新就不动 */
-        liveRev = j.rev;
-        applyRemoteContent(j);
-      })
-      .catch(function () {
-        liveBusy = false;   /* 云端不通 → 静默跳过，页面继续显示静态内容 */
-      });
+    /* 首屏（还没应用过任何云端内容）直接拉完整内容：
+       保证「打开页面就是最新」，不依赖任何版本号比较。 */
+    var job = (liveRev === null) ? fetchFull() : pollRev();
+    job.catch(function () {
+      /* 云端不通 → 静默跳过，页面继续显示静态内容 */
+    }).then(function () { liveBusy = false; });
   }
 
   function startLivePolling() {
