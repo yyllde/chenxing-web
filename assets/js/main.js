@@ -56,13 +56,32 @@
     return /^\d+(\.\d+)?$/.test(v) ? '¥' + v : v;
   }
 
+  /* --------------------------------------------------------------------------
+   * 图片地址的版本号 —— 解决「换了图片但网站还是显示旧的」
+   *
+   * GitHub Pages 给所有静态文件固定返回 cache-control: max-age=600，而且**没法覆盖**。
+   * 所以如果你换了一张图、文件名没变（比如还是 banner-header.webp），
+   * 浏览器和 CDN 会一直拿缓存里那张旧图，最多 10 分钟都不更新。
+   *
+   * 办法：所有图片地址后面挂一个 ?v=<内容版本>。版本一变，地址就变，
+   * 浏览器才会当成新资源去取。版本号来自 config.js 里的 SITE_CONFIG.contentRev
+   * （后台每次发布/换图都会把它往前推）。
+   * ------------------------------------------------------------------------ */
+  var assetVer = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG && SITE_CONFIG.contentRev) || '';
+
+  function withVer(src) {
+    if (!src || !assetVer) return src;
+    if (!/^assets\//.test(src)) return src;        /* 外链图片不加 */
+    return src + (src.indexOf('?') >= 0 ? '&' : '?') + 'v=' + assetVer;
+  }
+
   /* 创建带兜底的图片 */
   function img(src, cls, alt) {
     var i = document.createElement('img');
     if (cls) i.className = cls;
     if (alt) i.alt = alt;
     if (src) {
-      i.src = src;
+      i.src = withVer(src);
       i.addEventListener('error', function () {
         if (i.dataset.fallbackApplied) return;
         i.dataset.fallbackApplied = '1';
@@ -702,7 +721,14 @@
     if (cfg.UI_TEXT) window.UI_TEXT = cfg.UI_TEXT;
 
     var after = stableJson([SERVICE_CATEGORIES, configSnapshot()]);
-    if (before === after) return false;
+    var contentChanged = (before !== after);
+
+    /* 即使文字内容没变，只要版本号往前走了（典型情况：你换了同一张图，
+       内容里的图片路径没变），也要重绘一次 —— 否则浏览器会一直吃 600 秒缓存里的旧图 */
+    var verChanged = String(j.rev) !== String(assetVer);
+
+    if (!contentChanged && !verChanged) return false;
+    if (verChanged) assetVer = j.rev;
 
     /* 真的变了才重绘。各渲染函数都是「先清空再重建」，可以安全重复调用 */
     applySiteConfig();
