@@ -1,7 +1,7 @@
 # 辰兴电竞 · 价格表网站（融合版）
 
-> ## 🌐 线上地址：<https://yyllde.github.io/chenxing-web/>
-> 代码仓库（公开）：<https://github.com/yyllde/chenxing-web>
+> ## 🌐 线上地址：<https://www.chenxingg.cn/>
+> 备用地址：<https://yyllde.github.io/chenxing-web/>　｜　代码仓库（公开）：<https://github.com/yyllde/chenxing-web>
 > 更新流程见 **[上线部署指南.md](上线部署指南.md)** 第零节（改完跟我说一句「更新一下」即可）。
 
 对 <https://dduniao.com/> 的复刻，并融合了参考页面（辰兴电竞价格表）的版式。
