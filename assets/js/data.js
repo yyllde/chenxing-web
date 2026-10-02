@@ -57,7 +57,7 @@ var SERVICE_CATEGORIES = [
         title: '大王叫我来巡山',
         subtitle: '',
         image: null,
-        contentImage: 'assets/images/image.webp',
+        contentImage: 'assets/images/item-dawang-xunshan.webp',
         prices: [],
         rule: ''
       },
@@ -75,7 +75,7 @@ var SERVICE_CATEGORIES = [
         title: '神秘黑洞趣味单',
         subtitle: '',
         image: null,
-        contentImage: 'assets/images/image.webp',
+        contentImage: 'assets/images/item-shenmi-heidong.webp',
         prices: [],
         rule: ''
       }
@@ -92,7 +92,7 @@ var SERVICE_CATEGORIES = [
         title: '单次预存福利',
         subtitle: '',
         image: null,
-        contentImage: 'assets/images/image.webp',
+        contentImage: 'assets/images/item-yucun-fuli.webp',
         prices: [],
         rule: ''
       },
