@@ -1,0 +1,26 @@
+/* ==========================================================================
+ * 站点自己的字体 —— 不再依赖外部 CDN
+ * ==========================================================================
+ * 原来 index.html 里引的是 https://miaoda.feishu.cn/fonts/css2?... 那个文件：
+ *   · 它是 <link rel="stylesheet">，会**阻塞渲染**
+ *     （实测冷启动首字节到过 11.2 秒，正常 0.1~1 秒，波动很大）
+ *   · 它引的 Noto Sans SC 有 4.6 MB，而 base.css 又把它放在正文字体第一位
+ *     —— 等于访客可能在后台悄悄下载 4.6 MB
+ *
+ * 现在改成：
+ *   · 手写体 ZCOOL KuaiLe 自己托管，只保留站点用得到的 699 个字符
+ *     1479 KB → 62 KB（小 24 倍），且不再阻塞渲染
+ *   · 正文不再指定 Noto Sans SC，直接用系统字体（苹方 / 微软雅黑），
+ *     中文字形几乎一样，却省掉 4.6 MB
+ *
+ * 字体授权：ZCOOL KuaiLe = SIL Open Font License 1.1，允许自托管与再分发。
+ * 内容里加了生僻字想重新子集化：node _verify/build-fonts.mjs
+ * ======================================================================== */
+
+@font-face {
+  font-family: 'ZCOOL KuaiLe';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;   /* 字体没到之前先用系统字体显示，绝不出现空白 */
+  src: url('../fonts/zcool-kuaile-subset.woff2') format('woff2');
+}

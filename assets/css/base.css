@@ -70,7 +70,10 @@ body {
   background: var(--page-bg, linear-gradient(180deg, #fce7f3 0%, #fdf2f8 30%, #f3e8ff 100%));
   background-attachment: fixed;
   color: var(--tx);
-  font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  /* 正文不再指定 "Noto Sans SC"：那个字体文件 4.6 MB，而苹方 / 微软雅黑
+     这些系统字体本来就装在每个中文用户的设备上，字形几乎一样。
+     去掉它等于白白省下最多 4.6 MB。 */
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
   line-height: 1.6;
   min-height: 100vh;
   /* 给固定在底部的两个按钮留出空间 */
@@ -78,9 +81,11 @@ body {
   overflow-x: hidden;
 }
 
-/* 手写风格字体：标题、按钮等活泼元素专用（加载失败时自动回落到系统字体） */
+/* 手写风格字体：标题、按钮等活泼元素专用。
+   字体已经自己托管（assets/fonts/zcool-kuaile-subset.woff2，62 KB），
+   加载失败时自动回落到系统字体。 */
 .fun {
-  font-family: "ZCOOL KuaiLe", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-family: "ZCOOL KuaiLe", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
 }
 
 button {
