@@ -94,11 +94,18 @@
      而立刻下载 —— 实测过，一张 463KB 的底部长图照样在首屏就被拉下来了。
      自己用 IntersectionObserver 判断，位置一定准。
 
-     rootMargin 留 1000px 提前量（2026-10-03 由 600px 上调）。
-     为什么从 600 调到 1000：实测页脚那张 368KB 的长图，慢 4G（0.4Mbps）下要 9.6 秒
-     才下完，600px 在下滚 700px/s 时只给 0.86 秒缓冲 → 滚到了还空着。
-     调到 1000px 后，正常下滚能拿到约 1.4 秒缓冲，可覆盖「一般 4G」的 0.93 秒。
-     再往上调（1500px+）会连首屏之外的图一起提前拉，反而伤首屏流量，故不做。 */
+     600px 是实测调优后的结果，**不要轻易加大**（2026-10-03 试过 1000px 又改回来）：
+       实测（1440×900、不滚动、禁缓存、CDP 逐像素步进记录首次请求时的 scrollY）：
+         提前量 600px → 首屏共下 3 张图：轮播 175KB + 封面 109KB + favicon
+         提前量 1000px → 首屏多下 1 张价目表长图 151KB（它距屏下沿 603px）
+       收益侧：慢 4G（0.4Mbps）页脚长图要 6.5s 下完，600px 只能给 0.86s 缓冲、
+       1000px 给 1.43s —— 两个都不够，所以「加大提前量」在弱网下避免不了空白；
+       而它确实让「正常网速下滚动」更顺一点。
+       代价侧：首屏稳定多 151KB ≈ 弱网 +3.1 秒、一般 4G +0.77 秒，
+       且会让 _verify/verify-lazy.mjs 判定「远处图被提前下载」而不通过。
+       结论：首屏代价是**每次访问都付的确定成本**，滚动顺滑的收益只在中等网速下可感，
+       故保持 600px。真要在弱网下不出现空白，正确做法是压图（页脚长图已从
+       463KB/1080×5063 压到 290KB/900×4219）+ 把长图切成多段，而不是加大提前量。 */
   var lazyObserver = (typeof IntersectionObserver !== 'undefined')
     ? new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
@@ -107,7 +114,7 @@
         var s = e.target.getAttribute('data-lazy-src');
         if (s) { e.target.removeAttribute('data-lazy-src'); e.target.src = s; }
       });
-    }, { rootMargin: '1000px 0px' })
+    }, { rootMargin: '600px 0px' })
     : null;
 
   /* 创建带兜底的图片。
