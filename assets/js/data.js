@@ -85,7 +85,7 @@ var SERVICE_CATEGORIES = [
     id: '0795399f5593455c95a30a4e93469c65',
     title: '预存/活动',
     subtitle: '',
-    cover: 'assets/images/covers/cover-deposit-event.jpg',
+    cover: 'assets/images/covers/cover-deposit-event.webp',
     items: [
       {
         id: '003a0667adc9492cbfc8ce9acbf8af4d',
@@ -111,7 +111,7 @@ var SERVICE_CATEGORIES = [
     id: 'bd7c5ddac3754c9e90388f71495c581f',
     title: '礼物单',
     subtitle: '',
-    cover: 'assets/images/covers/cover-gift.jpg',
+    cover: 'assets/images/covers/cover-gift.webp',
     items: [
       {
         id: '820b2b250ea14a6dae055c33e5156033',
