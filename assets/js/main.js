@@ -72,6 +72,15 @@
     return (m && typeof m === 'object') ? m : {};
   }
 
+  /* 图片的原始宽高（后台上传时一起记下来的）。
+     为什么要它：懒加载的图在下载完之前是没有高度的，如果不预留位置，
+     整页会「瘪」下去，结果下面的图反而被判定成「就在屏幕附近」而提前下载 ——
+     那就等于懒加载白做了。按真实宽高预留之后，页面高度是对的，懒加载才真的有效。 */
+  function imgSizeMap() {
+    var m = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG && SITE_CONFIG.imageSize) || {};
+    return (m && typeof m === 'object') ? m : {};
+  }
+
   function withVer(src) {
     if (!src || !/^assets\//.test(src)) return src;      /* 外链图片不加 */
     var v = imgVerMap()[src];
@@ -105,6 +114,8 @@
     i.decoding = 'async';
     if (src) {
       var real = withVer(src);
+      var sz = imgSizeMap()[src];
+      if (sz && sz[0] && sz[1]) { i.width = sz[0]; i.height = sz[1]; }   /* 预留位置，避免整页瘪下去 */
       if (eager || !lazyObserver) {
         i.src = real;
       } else {
