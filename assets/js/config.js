@@ -24,7 +24,16 @@ var SITE_CONFIG = {
 var HERO_CONFIG = {
   autoplay: true,
   interval: 4000,
-  slides: []
+  slides: [
+    {
+      image: 'assets/images/banner-header.png',
+      alt: '',
+      title: '',
+      subtitle: '',
+      fit: 'contain',
+      toCategory: ''
+    }
+  ]
 };
 
 /* 三、顶部导航 */
