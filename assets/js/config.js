@@ -12,13 +12,13 @@ var ASSETS = 'assets';
 /* 一、站点基本信息 */
 var SITE_CONFIG = {
   name: '辰兴电竞',
-  title: '辰兴电竞 · 价格表 [SYNC-syncmur4afnv]',
+  title: '辰兴电竞 · 价格表 [SYNC-syncmur4b29h]',
   description: '辰兴电竞价格表 - 专业游戏陪玩服务平台',
   keywords: '游戏陪玩,电竞,陪玩师,游戏服务',
   favicon: 'assets/images/favicon-32.png',
   fallbackImage: 'assets/images/default-avatar.svg',
   background: 'linear-gradient(180deg,#fdf2f8 0%,#ffffff 100%)',
-  contentRev: 25
+  contentRev: 26
 };
 
 /* 二、顶部主视觉轮播 */
