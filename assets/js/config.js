@@ -39,22 +39,6 @@ var HERO_CONFIG = {
       subtitle: '体验单 / 小时区 / 基础单 · 爆款趣味玩法',
       fit: 'cover',
       toCategory: 'b193a539aad54a1aadf65294bbd9f742'
-    },
-    {
-      image: 'assets/images/covers/cover-roco-kingdom.jpg',
-      alt: '洛克王国',
-      title: '洛克王国',
-      subtitle: '托管 / 代练，周常活动一键清',
-      fit: 'cover',
-      toCategory: '4c109de554ce444bb4ff8a52d97c2ea6'
-    },
-    {
-      image: 'assets/images/covers/cover-valorant.jpg',
-      alt: '瓦罗兰特',
-      title: '瓦罗兰特',
-      subtitle: '基础价目表 · 趣味玩法 · 主播专区',
-      fit: 'cover',
-      toCategory: 'cccee0adc69943a09ae879e07b20339d'
     }
   ]
 };
