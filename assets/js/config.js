@@ -13,7 +13,7 @@ var ASSETS = 'assets';
 var SITE_CONFIG = {
   name: '辰兴电竞',
   title: '辰兴电竞 · 价格表',
-  description: '辰兴电竞价格表 - 专业游戏陪玩服务平台[端到端验证-mur0nt5d]',
+  description: '辰兴电竞价格表 - 专业游戏陪玩服务平台',
   keywords: '游戏陪玩,电竞,陪玩师,游戏服务',
   favicon: 'assets/images/favicon.ico',
   fallbackImage: 'assets/images/default-avatar.svg',
