@@ -53,15 +53,6 @@ var SERVICE_CATEGORIES = [
         rule: ''
       },
       {
-        id: 'bd9ae72e7eea4a248c2fed8da5e972e5',
-        title: '体验单/小时区/基础单',
-        subtitle: '',
-        image: 'assets/images/delta-pc-04-experience-basic.jpg',
-        contentImage: 'assets/images/detail/bd9ae72e7eea4a248c2fed8da5e972e5.jpg',
-        prices: [],
-        rule: ''
-      },
-      {
         id: 'item-mur4ke6wnizj',
         title: '大王叫我来巡山',
         subtitle: '',
