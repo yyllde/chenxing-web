@@ -410,8 +410,13 @@
   box-shadow: var(--shadow-soft);
 }
 .cat-card-cover-circle img {
-  /* 图片的 width/height 属性由 JS 按原图比例写成（1024×576），
-     如果不强制覆盖，属性尺寸会参与布局、把圆撑变形。 */
+  /* 必须绝对定位铺满：
+     img() 会给 <img> 写 width/height 属性（原图尺寸，例如 820×1367）。
+     在 aspect-ratio:1/1 的容器里，这个属性 + 图片自身长宽比会参与高度计算，
+     height:100% 被压过去 → 实测图片被撑成 194×323（比圆高），不是正圆内容盒。
+     绝对定位后高度按容器的确定值解析，图片才严格等于内容盒。 */
+  position: absolute;
+  inset: 0;
   width: 100% !important;
   height: 100% !important;
   object-fit: cover;

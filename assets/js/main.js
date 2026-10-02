@@ -382,13 +382,24 @@
     categories().forEach(function (cat) {
       var card = el('div', 'cat-card');
 
-      /* 圆形封面 + 分类名徽章（分类名移出封面，改成圆下徽章 —— 圆形里放不下那条渐变条） */
-      var cover = el('div', 'cat-card-cover');
-      if (cat.cover) {
-        var coverCircle = el('div', 'cat-card-cover-circle');
-        coverCircle.appendChild(img(cat.cover, null, cat.title));
-        cover.appendChild(coverCircle);
+      /* 圆形封面：显示「点进去之后第一个玩法的价目表大图」（2026-10-03 改）。
+         为什么不再用分类封面图：分类卡本来就是点进去看玩法的入口，
+         圆里放价的目表缩略更贴题；分类封面（covers/*）在后台仍可编辑，只是这张卡不再用它。
+         兜底顺序：第一个玩法的价目表大图 → 第一个有图玩法的任意图 → 分类封面 → 默认头像。 */
+      var firstItem = (cat.items || [])[0] || {};
+      var circleSrc = firstItem.contentImage || '';
+      if (!circleSrc) {
+        (cat.items || []).some(function (it) {
+          circleSrc = it.contentImage || it.image || '';
+          return !!circleSrc;
+        });
       }
+      if (!circleSrc) circleSrc = cat.cover || '';
+
+      var cover = el('div', 'cat-card-cover');
+      var coverCircle = el('div', 'cat-card-cover-circle');
+      coverCircle.appendChild(img(circleSrc || FALLBACK_IMG, null, firstItem.title || cat.title));
+      cover.appendChild(coverCircle);
       cover.appendChild(el('div', 'cat-card-name fun', cat.title));
       card.appendChild(cover);
 
