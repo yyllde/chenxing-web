@@ -23,7 +23,7 @@ var SERVICE_CATEGORIES = [
     id: 'b193a539aad54a1aadf65294bbd9f742',
     title: '三角洲端游',
     subtitle: '基础玩法',
-    cover: 'assets/images/covers/cover-delta-pc.jpg',
+    cover: 'assets/images/covers/cover-delta-pc.webp',
     items: [
       {
         id: 'e2a76c29dabf4760b9bb426b416e0188',
@@ -38,7 +38,7 @@ var SERVICE_CATEGORIES = [
         id: '955db451f862475ba0e17d532fd0a682',
         title: '基础小时陪',
         subtitle: '',
-        image: 'assets/images/delta-pc-02-new-hot-fun.png',
+        image: 'assets/images/delta-pc-02-new-hot-fun.webp',
         contentImage: 'assets/images/detail/955db451f862475ba0e17d532fd0a682.jpg',
         prices: [],
         rule: ''
@@ -47,7 +47,7 @@ var SERVICE_CATEGORIES = [
         id: '74bb5694459a408d871ebf5bb2a30917',
         title: '新赛季九格保险',
         subtitle: '',
-        image: 'assets/images/delta-pc-03-season-insurance.png',
+        image: 'assets/images/delta-pc-03-season-insurance.webp',
         contentImage: 'assets/images/detail/74bb5694459a408d871ebf5bb2a30917.jpg',
         prices: [],
         rule: ''
@@ -83,7 +83,7 @@ var SERVICE_CATEGORIES = [
         title: '预存福利',
         subtitle: '',
         image: 'assets/images/deposit-event-01-welfare.png',
-        contentImage: 'assets/images/detail/bc7c0f66cd55435ab1e8845e4b9a481e.jpg',
+        contentImage: 'assets/images/detail/bc7c0f66cd55435ab1e8845e4b9a481e.webp',
         prices: [],
         rule: ''
       }
@@ -99,7 +99,7 @@ var SERVICE_CATEGORIES = [
         id: '820b2b250ea14a6dae055c33e5156033',
         title: '辰兴周星好礼',
         subtitle: '',
-        image: 'assets/images/gift-01-weekly-star.png',
+        image: 'assets/images/gift-01-weekly-star.webp',
         contentImage: 'assets/images/detail/820b2b250ea14a6dae055c33e5156033.jpg',
         prices: [],
         rule: ''
@@ -108,7 +108,7 @@ var SERVICE_CATEGORIES = [
         id: 'e87377ef03184dfc9eca302c0a26b885',
         title: '礼物单',
         subtitle: '',
-        image: 'assets/images/gift-02-gift-list.png',
+        image: 'assets/images/gift-02-gift-list.webp',
         contentImage: 'assets/images/detail/e87377ef03184dfc9eca302c0a26b885.jpg',
         prices: [],
         rule: ''

@@ -26,7 +26,7 @@ var HERO_CONFIG = {
   interval: 4000,
   slides: [
     {
-      image: 'assets/images/banner-header.png',
+      image: 'assets/images/banner-header.webp',
       alt: '',
       title: '',
       subtitle: '',
@@ -74,7 +74,7 @@ var CONTENT_CONFIG = {
 
 /* 七、底部装饰横幅 */
 var NOTICE_CONFIG = {
-  image: 'assets/images/banner-footer-notice.png',
+  image: 'assets/images/banner-footer-notice.webp',
   alt: '板板须知',
   title: '板板须知'
 };
