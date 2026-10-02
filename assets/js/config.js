@@ -17,7 +17,7 @@ var SITE_CONFIG = {
   keywords: '游戏陪玩,电竞,陪玩师,游戏服务',
   favicon: 'assets/images/favicon.ico',
   fallbackImage: 'assets/images/default-avatar.svg',
-  background: 'linear-gradient(180deg,#fce7f3 0%,#fdf2f8 30%,#f3e8ff 100%)'
+  background: 'linear-gradient(180deg,#fdf2f8 0%,#ffffff 100%)'
 };
 
 /* 二、顶部主视觉轮播 */
