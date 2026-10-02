@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- 标题 / 描述 / 关键词 / 图标 由 assets/js/config.js -> SITE_CONFIG 注入 -->
+  <title>渡渡鸟电竞</title>
+
+  <!-- 手写体标题字体（联网时生效；离线时自动回落到系统黑体，不影响使用） -->
+  <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" />
+
+  <!-- 样式：base.css 设计变量与通用样式，layout.css 各区块版式 -->
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+</head>
+<body>
+
+  <!--
+    ==========================================================================
+     页面结构（自上而下）：
+       1.  .hero          顶部主视觉轮播 ---------- config.js -> HERO_CONFIG
+       2.  .tabs          吸顶分类导航 ------------ data.js + NAV_CONFIG
+       3.  .wrap          内容区
+             #content    分类视图 / 全部视图（由 main.js 渲染）
+             #siteparts  底部横幅 + 页脚（只渲染一次）
+       4.  .cta           固定在底部的两个按钮 ---- CTA_CONFIG
+       5.  .mask/.sheet   下单弹层 --------------- SHEET_CONFIG
+       6.  .lightbox      图片放大预览
+       7.  .toast         轻提示
+     ==========================================================================
+  -->
+
+  <!-- 1. 顶部主视觉轮播 -->
+  <div class="hero" id="hero">
+    <div class="hero-track" id="heroTrack"></div>
+    <button class="hero-arrow prev" id="heroPrev" type="button" aria-label="上一张">‹</button>
+    <button class="hero-arrow next" id="heroNext" type="button" aria-label="下一张">›</button>
+    <div class="hero-dots" id="heroDots"></div>
+  </div>
+
+  <!-- 2. 吸顶分类导航 -->
+  <nav class="tabs" aria-label="分类导航">
+    <div class="tabs-inner no-scrollbar" id="tabs"></div>
+  </nav>
+
+  <!-- 3. 内容区 -->
+  <main class="wrap">
+    <div class="shell">
+      <div id="content"></div>
+      <div id="siteparts"></div>
+    </div>
+  </main>
+
+  <!-- 4. 固定在底部的按钮栏 -->
+  <div class="cta">
+    <div class="cta-inner">
+      <button class="copy" id="ctaCopy" type="button">复制客服微信</button>
+      <button class="wx fun" id="ctaOrder" type="button">点我下单 ♡</button>
+    </div>
+  </div>
+
+  <!-- 5. 下单弹层 -->
+  <div class="mask" id="mask" role="dialog" aria-modal="true" aria-label="添加客服下单">
+    <div class="sheet">
+      <h3 class="fun" id="sheetTitle"></h3>
+      <p class="sheet-desc" id="sheetDesc"></p>
+      <div class="qr" id="sheetQr"></div>
+      <div class="sheet-wx" id="sheetWx"></div>
+      <button id="sheetCopy" type="button"></button>
+      <button class="sec" id="sheetClose" type="button"></button>
+    </div>
+  </div>
+
+  <!-- 6. 图片放大预览 -->
+  <div class="lightbox" id="lightbox" style="display:none">
+    <img id="lightboxImg" alt="" />
+    <button class="lightbox-close" id="lightboxClose" type="button" aria-label="关闭">×</button>
+  </div>
+
+  <!-- 7. 轻提示 -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!--
+    ==========================================================================
+     脚本加载顺序（重要，不要调换）：
+       1) data.js    内容数据（分类 / 条目 / 价格 / 规则）
+       2) config.js  站点配置（标题 / 轮播 / 按钮 / 弹层 / 页脚）
+       3) main.js    渲染与交互
+     ==========================================================================
+  -->
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

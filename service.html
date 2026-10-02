@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>正在打开… - 渡渡鸟电竞</title>
+  <!--
+    ==========================================================================
+     兼容页：融合版把「分类 / 玩法 / 价目表」合并进了 index.html 单页，
+     不再需要独立的详情页。这个文件只负责把老链接
+        service.html?id=<条目id>&cat=<分类id>
+     转到新地址
+        index.html#cat=<分类id>&item=<条目id>
+     所以以前发出去的链接不会失效。
+     ==========================================================================
+  -->
+</head>
+<body>
+  <p style="font-family:system-ui,sans-serif;padding:24px;color:#4a1942">
+    正在打开相关内容…如果浏览器没有自动跳转，<a id="fallback" href="index.html">点这里回到首页</a>。
+  </p>
+
+  <script src="assets/js/data.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      function pick(query) {
+        var out = {};
+        (query || '').replace(/^\?/, '').split('&').forEach(function (kv) {
+          if (!kv) return;
+          var p = kv.split('=');
+          try { out[p[0]] = decodeURIComponent(p[1] || ''); }
+          catch (e) { out[p[0]] = p[1] || ''; }
+        });
+        return out;
+      }
+
+      var q = pick(window.location.search);
+      var itemId = q.id || '';
+      var catId = q.cat || '';
+
+      /* 老链接只给了条目 id 时，到数据里找出它属于哪个分类 */
+      if (!catId && itemId && typeof SERVICE_CATEGORIES !== 'undefined') {
+        SERVICE_CATEGORIES.forEach(function (cat) {
+          (cat.items || []).forEach(function (item) {
+            if (item.id === itemId) catId = cat.id;
+          });
+        });
+      }
+
+      var target = 'index.html';
+      if (catId) {
+        target += '#cat=' + encodeURIComponent(catId);
+        if (itemId) target += '&item=' + encodeURIComponent(itemId);
+      }
+
+      document.getElementById('fallback').setAttribute('href', target);
+      window.location.replace(target);
+    })();
+  </script>
+</body>
+</html>

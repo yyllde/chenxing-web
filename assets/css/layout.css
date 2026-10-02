@@ -1,0 +1,828 @@
+/**
+ * ============================================================================
+ *  layout.css —— 版式层（区块排布，对齐参考网站的排版风格）
+ * ============================================================================
+ *  页面自上而下的区块：
+ *    1. .hero          顶部主视觉轮播
+ *    2. .tabs          吸顶分类导航（对应原「顶部导航栏」）
+ *    3. .big-title     当前分类大标题卡
+ *    4. .subtabs       分类下的玩法胶囊按钮
+ *    5. .poster        海报卡（标题 / 价格盒 / 规则）
+ *    6. .price-sheet   价目表大图
+ *    7. .cat-list      「全部」视图：全部分类卡片
+ *    8. .notice        底部装饰横幅（板板须知）
+ *    9. .footer        页脚
+ *   10. .cta           固定在底部的两个按钮
+ *   11. .mask/.sheet   下单弹层
+ *   12. .toast         轻提示
+ *
+ *  改尺寸/间距：改这里对应的数值即可。
+ * ===========================================================================
+ */
+
+/* ==========================================================================
+   1. 顶部主视觉轮播
+   ========================================================================== */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fce7f3, #f3e8ff);
+  /* 轮播区高度：用宽高比控制，保证不同屏幕下节奏一致 */
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+
+.hero-track {
+  display: flex;
+  height: 100%;
+  transition: transform .5s cubic-bezier(.4, 0, .2, 1);
+  will-change: transform;
+}
+
+.hero-slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* 默认铺满裁切；fit=contain 的幻灯片会覆盖成完整显示 */
+  object-fit: cover;
+}
+
+.hero-slide.is-contain img {
+  object-fit: contain;
+}
+
+/* 幻灯片上的文字叠加层 */
+.hero-cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 34px 16px 16px;
+  color: #fff;
+  background: linear-gradient(180deg, rgba(74, 25, 66, 0) 0%, rgba(74, 25, 66, .62) 100%);
+  pointer-events: none;
+}
+.hero-cap .t {
+  font-size: 22px;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+}
+.hero-cap .s {
+  margin-top: 2px;
+  font-size: 12px;
+  opacity: .92;
+}
+
+/* 左右切换箭头 */
+.hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .78);
+  color: var(--tx);
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-soft);
+  transition: all .18s ease;
+  z-index: 3;
+}
+.hero-arrow:hover { background: #fff; transform: translateY(-50%) scale(1.08); }
+.hero-arrow:active { transform: translateY(-50%) scale(.94); }
+.hero-arrow.prev { left: 10px; }
+.hero-arrow.next { right: 10px; }
+
+/* 底部指示点 */
+.hero-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  z-index: 3;
+}
+.hero-dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, .62);
+  transition: all .22s ease;
+}
+.hero-dot.on {
+  width: 20px;
+  background: #fff;
+}
+
+/* ==========================================================================
+   2. 吸顶分类导航
+   ========================================================================== */
+.tabs {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(253, 242, 248, .95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--pink-l);
+}
+
+.tabs-inner {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 12px 14px;
+}
+
+.tab {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  color: var(--tx2);
+  font-size: 13px;
+  font-weight: 700;
+  border: 2px solid var(--line);
+  white-space: nowrap;
+  transition: all .15s ease;
+}
+.tab:hover {
+  color: var(--pink);
+  border-color: var(--pink-l);
+  transform: translateY(-1px);
+}
+.tab.on {
+  background: var(--gradient-brand);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(236, 72, 153, .3);
+}
+.tab:active { transform: scale(.96); }
+
+/* ==========================================================================
+   3. 内容区外壳
+   ========================================================================== */
+.wrap {
+  padding: 16px 14px;
+}
+
+/* ==========================================================================
+   4. 大标题卡
+   ========================================================================== */
+.big-title {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+/* ==========================================================================
+   5. 玩法胶囊按钮组
+   ========================================================================== */
+.subtabs {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.subtab {
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  color: var(--tx);
+  font-size: 14px;
+  font-weight: 700;
+  transition: all .15s ease;
+}
+.subtab:hover {
+  background: var(--pink-l);
+  transform: translateY(-1px);
+}
+.subtab.on {
+  background: var(--gradient-subtab);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(244, 114, 182, .4);
+}
+.subtab:active { transform: scale(.96); }
+
+/* ==========================================================================
+   6. 海报卡
+   ========================================================================== */
+.poster {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-poster);
+  background: #f0f4f8;
+  isolation: isolate;
+}
+
+/* 背景装饰图（分类封面），铺满整张卡 */
+.poster-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* 内容层：白色蒙版从上方渐隐，保证文字可读又不遮住下方画面
+   （参考站这里用的是绝对定位叠加，内容一多就会溢出；这里改成由内容撑高） */
+.poster-body {
+  position: relative;
+  min-height: 420px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, .95) 0%,
+    rgba(255, 255, 255, .88) 40%,
+    rgba(255, 255, 255, .18) 68%,
+    rgba(255, 255, 255, 0) 100%);
+}
+
+.poster .p-title {
+  font-size: 36px;
+  line-height: 1.1;
+  color: #6d5a8a;
+  text-shadow: 2px 2px 0 #fff;
+}
+.poster .p-sub {
+  margin-top: -4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #8a7a9a;
+}
+
+.poster .prices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+.poster .price-box {
+  background: rgba(255, 255, 255, .88);
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  border: 2px solid #c8b8d8;
+  transition: all .18s ease;
+}
+.poster .price-box:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+.poster .price-box .n { font-size: 13px; font-weight: 700; color: #6d5a8a; }
+.poster .price-box .v { font-size: 28px; font-weight: 900; color: #e06080; }
+.poster .price-box .u { font-size: 13px; color: #9d8baa; }
+
+.poster .rule {
+  margin-top: 12px;
+  background: rgba(255, 255, 255, .88);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+.poster .rule .rt {
+  display: inline-block;
+  background: var(--purple);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+.poster .rule p {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #6d5a8a;
+  white-space: pre-line;   /* 规则里的 \n 换行生效 */
+}
+
+/* ==========================================================================
+   7. 价目表大图卡
+   ========================================================================== */
+.price-sheet {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+}
+.price-sheet-head {
+  padding: 14px 18px;
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--tx);
+  border-bottom: 2px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.price-sheet-head .hint {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--tx2);
+}
+.price-sheet-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  cursor: zoom-in;
+  background: #fff;
+}
+.price-sheet-empty {
+  padding: 34px 18px;
+  text-align: center;
+  color: var(--tx2);
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   8. 「全部」视图的分类卡片
+   ========================================================================== */
+.cat-list {
+  display: grid;
+  gap: 16px;
+}
+
+.cat-card {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: all .2s ease;
+}
+.cat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-poster);
+}
+
+.cat-card-cover {
+  position: relative;
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fce7f3, #f3e8ff);
+}
+.cat-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* 分类名压在封面上（沿用 dduniao 的粉色渐变条视觉识别） */
+.cat-card-name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 22px 16px 10px;
+  background: linear-gradient(180deg, rgba(255, 154, 158, 0) 0%, rgba(255, 154, 158, .92) 100%);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 900;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, .18);
+}
+
+.cat-card-body { padding: 14px 16px 16px; }
+
+.cat-card-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cat-chip {
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--bg);
+  color: var(--tx2);
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--line);
+  transition: all .15s ease;
+}
+.cat-chip:hover {
+  background: var(--pink-l);
+  color: var(--tx);
+}
+
+.cat-card-btn {
+  margin-top: 14px;
+  width: 100%;
+  padding: 11px;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-brand);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(236, 72, 153, .28);
+  transition: all .18s ease;
+}
+.cat-card-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-cta); }
+.cat-card-btn:active { transform: scale(.97); }
+
+/* ==========================================================================
+   9. 底部装饰横幅（板板须知）
+   ========================================================================== */
+.notice {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 4px;
+  box-shadow: var(--shadow-card);
+}
+.notice-head {
+  padding: 14px 18px;
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--tx);
+  border-bottom: 2px solid var(--line);
+}
+.notice-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  cursor: zoom-in;
+}
+
+/* ==========================================================================
+   10. 页脚
+   ========================================================================== */
+.footer {
+  margin-top: 16px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  /* 沿用 dduniao 页脚的紫色渐变识别 */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  box-shadow: var(--shadow-poster);
+}
+
+.footer-inner {
+  padding: 26px 18px 22px;
+  text-align: center;
+}
+
+.footer-inner p { margin: 10px 0; font-size: 13px; }
+
+.footer .highlight {
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--dd-gold);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, .28);
+}
+.footer .features {
+  font-weight: 700;
+  color: #ffeb3b;
+  font-size: 13px;
+}
+.footer .desc,
+.footer .vip {
+  background: rgba(255, 255, 255, .14);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  line-height: 1.75;
+  text-align: left;
+}
+.footer .vip {
+  background: rgba(255, 215, 0, .2);
+  border: 1px solid rgba(255, 215, 0, .38);
+}
+.footer .closing {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--dd-gold);
+  margin-top: 16px;
+}
+
+.footer-contacts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, .26);
+}
+.footer-contact {
+  background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: var(--radius-md);
+  padding: 12px 10px;
+  transition: all .18s ease;
+}
+.footer-contact:hover {
+  background: rgba(255, 255, 255, .2);
+  transform: translateY(-3px);
+}
+.footer-contact .k { display: block; font-size: 11px; opacity: .85; }
+.footer-contact .v {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--dd-gold);
+}
+
+.footer-beian {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, .2);
+  font-size: 11px;
+}
+.footer-beian a {
+  color: rgba(255, 255, 255, .8);
+  transition: color .18s ease;
+}
+.footer-beian a:hover { color: var(--dd-gold); text-decoration: underline; }
+.footer-copy {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, .68);
+}
+
+/* ==========================================================================
+   11. 固定在底部的按钮栏
+   ========================================================================== */
+.cta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  gap: 10px;
+  /* 底部渐隐，避免按钮直接压在内容上 */
+  background: linear-gradient(180deg, rgba(253, 242, 248, 0) 0%, rgba(253, 242, 248, .92) 40%, rgba(253, 242, 248, .98) 100%);
+}
+.cta-inner {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+.cta button {
+  flex: 1;
+  padding: 14px;
+  border-radius: var(--radius-pill);
+  font-size: 15px;
+  font-weight: 900;
+  transition: all .18s ease;
+}
+.cta .wx {
+  background: var(--gradient-brand);
+  color: #fff;
+  box-shadow: var(--shadow-cta);
+}
+.cta .copy {
+  background: #fff;
+  color: var(--tx);
+  border: 2px solid var(--pink-l);
+}
+.cta button:hover { transform: translateY(-2px); }
+.cta button:active { transform: scale(.97); }
+
+/* ==========================================================================
+   12. 下单弹层
+   ========================================================================== */
+.mask {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, .5);
+  backdrop-filter: blur(3px);
+}
+.mask.show { display: flex; }
+
+.sheet {
+  width: 100%;
+  max-width: 480px;
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  padding: 24px 20px calc(30px + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+  animation: sheetUp .25s ease;
+}
+.sheet h3 {
+  font-size: 20px;
+  color: var(--pink);
+  margin-bottom: 6px;
+}
+.sheet .sheet-desc {
+  color: var(--tx2);
+  font-size: 13px;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+.sheet .qr {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 14px;
+  border-radius: 16px;
+  background: var(--bg);
+  border: 2px dashed var(--pink-l);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tx2);
+  font-size: 12px;
+  overflow: hidden;
+}
+.sheet .qr img { width: 100%; height: 100%; object-fit: cover; }
+.sheet .sheet-wx {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--purple);
+  word-break: break-all;
+}
+.sheet button {
+  margin-top: 14px;
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-pill);
+  background: var(--gradient-brand);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 900;
+  transition: all .18s ease;
+}
+.sheet button.sec { background: var(--line); color: var(--tx2); }
+.sheet button:hover { transform: translateY(-2px); }
+.sheet button:active { transform: scale(.97); }
+
+/* ==========================================================================
+   13. 图片放大预览（价目表 / 板板须知长图）
+   ========================================================================== */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, .9);
+  animation: popIn .2s ease;
+}
+.lightbox img {
+  max-width: 94vw;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+}
+.lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .2);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox-close:hover { background: rgba(255, 255, 255, .34); }
+
+/* ==========================================================================
+   14. 轻提示
+   ========================================================================== */
+.toast {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, .8);
+  color: #fff;
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+  max-width: 80vw;
+  text-align: center;
+}
+.toast.show {
+  opacity: 1;
+  animation: toastIn .2s ease;
+}
+
+/* ==========================================================================
+   15. 响应式
+   ========================================================================== */
+
+/* ---- 手机竖屏（<480px）：压缩标题与间距，避免大标题换行过多 ---- */
+@media (max-width: 479px) {
+  .hero { aspect-ratio: 4 / 3; }
+  .hero-cap .t { font-size: 19px; }
+  .wrap { padding: 14px 12px; }
+  .big-title { padding: 18px; font-size: 18px; }
+  .subtabs { padding: 14px; gap: 8px; }
+  .subtab { padding: 9px 15px; font-size: 13px; }
+  .poster .p-title { font-size: 28px; }
+  .poster-body { min-height: 340px; padding: 16px; }
+  .poster .price-box { padding: 10px 14px; }
+  .poster .price-box .v { font-size: 24px; }
+  .footer-contacts { grid-template-columns: 1fr; }
+}
+
+/* ---- 大屏手机（480–767px） ---- */
+@media (min-width: 480px) and (max-width: 767px) {
+  .hero { aspect-ratio: 16 / 9; }
+  .wrap { padding: 16px 14px; }
+}
+
+/* ---- 平板（768–1199px）---- */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .hero { aspect-ratio: 21 / 9; }
+  .hero-cap .t { font-size: 26px; }
+  .hero-cap .s { font-size: 13px; }
+  .wrap { padding: 20px 18px; }
+  .poster-body { min-height: 400px; }
+  .cat-list { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---- 桌面（≥1200px）---- */
+@media (min-width: 1200px) {
+  .hero {
+    aspect-ratio: 21 / 9;
+    /* 桌面端轮播仍然满宽：它是主视觉，铺满更有气势 */
+    max-width: none;
+  }
+  .hero-arrow { width: 42px; height: 42px; font-size: 18px; }
+  .hero-arrow.prev { left: 24px; }
+  .hero-arrow.next { right: 24px; }
+  .hero-cap { padding: 48px 44px 22px; }
+  .hero-cap .t { font-size: 30px; }
+  .hero-cap .s { font-size: 14px; }
+
+  .tabs-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 12px 0;
+  }
+  .tab { font-size: 14px; padding: 9px 20px; }
+
+  .wrap { padding: 22px 0; }
+  .big-title { font-size: 24px; padding: 26px; }
+  .subtabs { padding: 22px; gap: 12px; }
+  .subtab { font-size: 15px; padding: 11px 24px; }
+  .poster .p-title { font-size: 42px; }
+  .poster-body { min-height: 460px; padding: 26px; gap: 12px; }
+  .poster .price-box { padding: 14px 22px; }
+  .poster .price-box .v { font-size: 32px; }
+  .poster .rule p { font-size: 13px; }
+
+  .cat-list { grid-template-columns: repeat(2, 1fr); }
+  .cat-card-cover { aspect-ratio: 16 / 8; }
+
+  .footer-inner { padding: 32px 28px 26px; }
+  .footer-inner p { font-size: 14px; }
+  .footer .highlight { font-size: 19px; }
+  .footer-contacts { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---- 超宽屏（≥1600px）：略微放大版心，避免过于局促 ---- */
+@media (min-width: 1600px) {
+  :root { --content-max: 960px; }
+}
+
+/* ---- 横屏矮屏 ---- */
+@media (orientation: landscape) and (max-height: 520px) {
+  .hero { aspect-ratio: 24 / 9; }
+  .poster-body { min-height: 280px; }
+}
