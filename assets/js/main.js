@@ -633,6 +633,12 @@
       body.appendChild(r);
     }
 
+    /* 没有底图时整张卡只剩两行字，卡片外观（渐变底/圆角/阴影/大内边距，
+       桌面还有 300px 最小高度）会让页面出现一大片空卡片 —— 用户反馈桌面端
+       「这个太大了，改成只有文字在那里」。这里打上 cx-plain，由 CSS 去掉卡片外观。
+       底图重新打开时（posterBg: true）不加这个类，外观自动恢复。 */
+    if (!posterBgOn) poster.classList.add('cx-plain');
+
     poster.appendChild(body);
     return poster;
   }

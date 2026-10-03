@@ -276,6 +276,25 @@
   isolation: isolate;
 }
 
+/* 没有底图时：整个卡片外观都不要，只留文字。
+   为什么：底图下线后这张卡只剩「玩法名 + 副标题」两行字，
+   但卡片本身还带着渐变底、圆角、阴影和大内边距（桌面还有 300px 最小高度，
+   那是当初给照片留的版面）—— 于是页面上出现一大片空卡片。
+   用户 2026-10-03 反馈桌面端「这个太大了，改成只有文字在那里」，故如此改。
+   想恢复卡片外观：把 main.js buildPoster 里的 cx-plain 类去掉即可。 */
+.poster.cx-plain {
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+  margin-bottom: 10px;
+}
+.poster.cx-plain .poster-body {
+  min-height: 0;
+  padding: 4px 2px 0;
+  gap: 4px;
+}
+
 /* 背景装饰图（分类封面）。2026-10-03 起默认不渲染（见 main.js buildPoster 的 posterBg 开关），
    这条规则保留，方便将来用 posterBg: true 把底图打开。 */
 .poster-bg {
