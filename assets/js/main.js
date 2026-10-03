@@ -368,6 +368,9 @@
     } else {
       renderCategoryView(wrap, findCat(state.cat));
     }
+
+    /* 内容刚重建过：重新挂一次吸顶钩子（「全部」视图里没有胶囊行，函数自己会跳过） */
+    initSubtabsSticky();
   }
 
   /* ---- 4.1 「全部」视图：每个分类一张卡片 ---- */
@@ -461,6 +464,126 @@
 
     wrap.appendChild(buildPoster(cat, current));
     wrap.appendChild(buildPriceSheet(cat, current));
+  }
+
+  /* ==========================================================================
+   * 4.4 胶囊行吸顶（2026-10-03）
+   * ========================================================================
+   *  为什么做：14 个玩法时胶囊行是 6 行 301px。访客滚到价格表时它早已滚出屏幕，
+   *        想换玩法必须一路滚回顶部（实测得滚回 y≈454）。
+   *
+   *  为什么「吸住后收成一行」：纯吸顶会让它连同上方的分类标签栏常驻遮挡
+   *        67 + 301 = 368px = 手机屏高的 44%，把访客最想看的价格表挤没了 ——
+   *        与吸顶的目的相反。收成一行后只占约 129px（屏高 15%），不遮挡价格，
+   *        且 14 个玩法仍然全部可达（左右滑动 + 选中项自动居中）。
+   *
+   *  判据用「哨兵」而不是 scrollTop 阈值：胶囊行在文档里的高度会随分类切换 /
+   *        字体加载 / 断点换行而变化，写死数字早晚错位。在它前面放一个 1px 的哨兵，
+   *        哨兵顶到标签栏下沿 = 刚好吸住。
+   * ======================================================================== */
+
+  var subsEl = null;
+  var subsSealEl = null;
+  var subsTabsEl = null;     /* 分类标签栏 .tabs 那个 nav（注意不是 id="tabs" 的元素！） */
+  var subsStuck = null;      /* 上一次的状态：只在「变了」的时候动 DOM */
+  var subsRaf = 0;
+
+  function subsMeasureTabs() {
+    /* 胶囊行要吸在分类标签栏正下方 —— 返回该用多少 top。
+       ⚠️ 坑：分类标签栏的 DOM 是
+            <nav class="tabs">            ← 真正吸顶、真正有高度的是这一层
+              <div class="tabs-inner" id="tabs">   ← id 却叫 tabs，但没有上下内边距
+            所以**不能**用 $('tabs')（那是 .tabs-inner，实测 64.8px），
+            必须按 class 取 <nav>（实测 66.8px），否则会重叠约 2px。
+
+       为什么要多加下边框：sticky 的 top 是按「不含 border 的 padding box 上沿」
+       对齐的，而 getBoundingClientRect().height 含 border。
+       ⚠️ 也不要缓存：首屏字体 / 图片加载会让标签栏高度变化，缓存值会过期。 */
+    if (!subsTabsEl) subsTabsEl = document.querySelector('.tabs');
+    if (!subsTabsEl) return 0;
+    var cs = window.getComputedStyle(subsTabsEl);
+    var border = parseFloat(cs.borderBottomWidth) || 0;
+    return Math.round(subsTabsEl.getBoundingClientRect().height + border);
+  }
+
+  function subsCenterActive() {
+    /* 把选中的胶囊滚到可视区中间 —— 否则切到靠后的玩法时，选中项会落在
+       横向滚动区外面，访客看不到自己选的是哪个。 */
+    if (!subsEl || !subsEl.classList.contains('is-stuck')) return;
+    var on = subsEl.querySelector('.subtab.on');
+    if (!on) return;
+    var box = subsEl.getBoundingClientRect();
+    var cur = on.getBoundingClientRect();
+    /* 选中项中心在「内容坐标系」里的位置 = 当前偏移 + 它相对容器的位置 + 半个自身宽 */
+    var centerInContent = (cur.left - box.left) + subsEl.scrollLeft + cur.width / 2;
+    var max = subsEl.scrollWidth - subsEl.clientWidth;
+    if (max <= 0) return;   /* 没得滚（玩法少 / 屏幕宽）就别动 */
+    subsEl.scrollLeft = Math.max(0, Math.min(max, centerInContent - subsEl.clientWidth / 2));
+  }
+
+  function subsSync() {
+    subsRaf = 0;
+    if (!subsEl || !subsSealEl) return;
+
+    /* 每次都重新量：标签栏高度会随字体 / 断点变化，不能用缓存值 */
+    var tabsH = subsMeasureTabs();
+    var stuck = subsSealEl.getBoundingClientRect().top <= tabsH + 1;
+
+    if (stuck !== subsStuck) {
+      subsStuck = stuck;
+      if (stuck) {
+        /* ★ 就在这一刻把 top 定下来（而非首屏算一次存着）——
+           这样无论标签栏之后怎么变高变矮，吸住的位置都是准的 */
+        subsEl.style.top = tabsH + 'px';
+        subsEl.classList.add('is-stuck');
+        subsCenterActive();          /* 状态一变宽度就变，立刻用新宽度重新居中 */
+      } else {
+        subsEl.style.top = '';
+        subsEl.classList.remove('is-stuck');
+        subsEl.scrollLeft = 0;       /* 回到多行布局时清掉横向偏移 */
+      }
+    } else if (stuck) {
+      subsEl.style.top = tabsH + 'px';   /* 窗口尺寸变了就跟着更新 */
+      subsCenterActive();
+    }
+  }
+
+  function subsOnScroll() {
+    if (subsRaf) return;
+    subsRaf = (window.requestAnimationFrame || function (f) { return setTimeout(f, 16); })(subsSync);
+  }
+
+  function initSubtabsSticky() {
+    var wrap = $('content');
+    if (!wrap) return;
+
+    /* 每次内容重绘 #content 都会被清空重建，所以在这里重新挂钩子 */
+    subsEl = wrap.querySelector('.subtabs');
+
+    if (subsSealEl && subsSealEl.parentNode) subsSealEl.parentNode.removeChild(subsSealEl);
+    subsSealEl = null;
+    subsStuck = null;
+
+    /* 「全部」视图没有胶囊行 —— 什么都不用挂 */
+    if (!subsEl) return;
+
+    subsSealEl = document.createElement('div');
+    subsSealEl.setAttribute('aria-hidden', 'true');
+    subsSealEl.style.cssText = 'height:1px;margin-bottom:-1px;pointer-events:none;';
+    subsEl.parentNode.insertBefore(subsSealEl, subsEl);
+
+    if (!initSubtabsSticky.hooked) {
+      initSubtabsSticky.hooked = true;
+      window.addEventListener('scroll', subsOnScroll, { passive: true });
+      /* resize 会让换行数 / 标签栏高度变化，重算一次（subsSync 自己会重量） */
+      window.addEventListener('resize', subsOnScroll);
+      /* 字体加载完宽度会变 → 影响有没有换行，所以也要重量一次 */
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { subsOnScroll(); });
+      }
+    }
+
+    subsSync();
   }
 
   /* 海报卡：标题 / 价格盒 / 规则。

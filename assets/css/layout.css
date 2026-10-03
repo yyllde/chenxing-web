@@ -209,6 +209,38 @@
   justify-content: center;
 }
 
+/* 2026-10-03：胶囊行吸顶。
+   为什么必须「吸住后收成一行」：14 个玩法时胶囊行是 6 行 301px，
+   纯吸顶会连同上方的分类标签栏一起常驻遮挡 67 + 301 = 368px = 手机屏高的 44%，
+   把访客最想看的价格表挤到几乎看不见 —— 与吸顶的目的相反。
+   收成一行后只占 67 + 62 = 129px（屏高 15%），且不遮挡价格。
+
+   未吸住 = .subtabs 原样（多行、居中、照旧）；
+   吸住   = .is-stuck（单行、左右滑动、选中项自动居中，见 main.js）。 */
+.subtabs {
+  position: sticky;
+  top: 0;                       /* 吸住的位置由 main.js 在进入吸住状态时按标签栏实时高度写入 */
+  z-index: 18;                  /* 低于 .tabs 的 20，避免盖住它 */
+}
+
+.subtabs.is-stuck {
+  display: block;               /* 单行：交给内部横向滚动 */
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  white-space: nowrap;
+  text-align: center;
+  padding: 10px 12px;
+  scroll-behavior: smooth;
+  box-shadow: 0 8px 20px rgba(236, 72, 153, .16);
+}.subtabs.is-stuck::-webkit-scrollbar { display: none; }
+.subtabs.is-stuck .subtab {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
 .subtab {
   padding: 10px 20px;
   border-radius: var(--radius-md);
