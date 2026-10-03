@@ -77,6 +77,78 @@ var SERVICE_CATEGORIES = [
         contentImage: 'assets/images/item-shenmi-heidong.webp',
         prices: [],
         rule: ''
+      },
+      {
+        id: 'item-musano7bp6p3',
+        title: '铁人三项',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-musano7bp6p3-eedefba3.webp',
+        prices: [],
+        rule: ''
+      },
+      {
+        id: 'item-musaonb08own',
+        title: '进击的巨人',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-musaonb08own-cdf20bbf.webp',
+        prices: [],
+        rule: ''
+      },
+      {
+        id: 'item-musapfjtahwc',
+        title: '核电站趣味单',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-musapfjtahwc-233b2017.webp',
+        prices: [],
+        rule: ''
+      },
+      {
+        id: 'item-musaq4bjzh25',
+        title: '金蛋爱好者',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-musaq4bjzh25-44964013.webp',
+        prices: [],
+        rule: ''
+      },
+      {
+        id: 'item-musaqozgg9b1',
+        title: '老板！我想下班~',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-musaqozgg9b1-4df837bd.webp',
+        prices: [],
+        rule: '所有单子打结默认本单没有问题，投诉售后请在单子结束 24 小时内提出。'
+      },
+      {
+        id: 'item-musarno3awg2',
+        title: '江湖追杀令',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-musarno3awg2-a3ab9b17.webp',
+        prices: [],
+        rule: ''
+      },
+      {
+        id: 'item-musas734ulh4',
+        title: '摸红无限续',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-musas734ulh4-b6a5da16.webp',
+        prices: [],
+        rule: ''
+      },
+      {
+        id: 'item-musasxxhdeuh',
+        title: '欧皇驾到趣味单',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-musasxxhdeuh-188035c9.webp',
+        prices: [],
+        rule: ''
       }
     ],
     cover: 'assets/images/cover-b193a539aad54a1aadf652-0ebd82a8.webp'
