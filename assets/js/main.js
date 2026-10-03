@@ -817,7 +817,10 @@
     var qr = $('sheetQr');
     clear(qr);
     if (cfg.qrImage) {
-      qr.appendChild(img(cfg.qrImage, null, '客服二维码'));
+      /* eager=true：这个弹层是 display:none 的，里面的图**永远不会**进入视口，
+         交给 IntersectionObserver 就会一直不加载 —— 访客点开弹层才会看到二维码
+         空白一下（弱网下更明显）。二维码只有几十 KB，直接下。 */
+      qr.appendChild(img(cfg.qrImage, null, '客服二维码', true));
     } else {
       qr.textContent = cfg.qrText || '';
     }
