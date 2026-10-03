@@ -78,7 +78,8 @@ var SERVICE_CATEGORIES = [
         prices: [],
         rule: ''
       }
-    ]
+    ],
+    cover: 'assets/images/cover-b193a539aad54a1aadf652-c86af0ea.webp'
   },
   {
     id: '0795399f5593455c95a30a4e93469c65',
@@ -103,7 +104,8 @@ var SERVICE_CATEGORIES = [
         prices: [],
         rule: ''
       }
-    ]
+    ],
+    cover: 'assets/images/cover-0795399f5593455c95a30a-3172cb4b.webp'
   },
   {
     id: 'bd7c5ddac3754c9e90388f71495c581f',
@@ -119,6 +121,7 @@ var SERVICE_CATEGORIES = [
         prices: [],
         rule: ''
       }
-    ]
+    ],
+    cover: 'assets/images/cover-bd7c5ddac3754c9e90388f-139dda20.webp'
   }
 ];
