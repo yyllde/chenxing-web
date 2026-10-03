@@ -79,7 +79,7 @@ var SERVICE_CATEGORIES = [
         rule: ''
       }
     ],
-    cover: 'assets/images/cover-b193a539aad54a1aadf652-c86af0ea.webp'
+    cover: 'assets/images/cover-b193a539aad54a1aadf652-0ebd82a8.webp'
   },
   {
     id: '0795399f5593455c95a30a4e93469c65',
