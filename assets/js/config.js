@@ -18,13 +18,13 @@ var SITE_CONFIG = {
   favicon: 'assets/images/favicon-32.png',
   fallbackImage: 'assets/images/default-avatar.svg',
   background: 'linear-gradient(180deg,#fff1f2 0%,#fef3c7 100%)',
-  contentRev: 89,
+  contentRev: 91,
   imageVer: {
-    'assets/images/banner-header.webp': 72,
+    'assets/images/hero-0-395e3c06.webp': 91,
     'assets/images/banner-footer-notice.webp': 72,
-    'assets/images/sheet-qr-639c25b3.webp': 89,
+    'assets/images/sheet-qr-639c25b3.webp': 91,
     'assets/images/favicon-32.png': 72,
-    'assets/images/cover-b193a539aad54a1aadf652-0ebd82a8.webp': 89,
+    'assets/images/cover-b193a539aad54a1aadf652-0ebd82a8.webp': 91,
     'assets/images/delta-pc-01-hot-fun.webp': 72,
     'assets/images/detail/e2a76c29dabf4760b9bb426b416e0188.webp': 72,
     'assets/images/delta-pc-02-new-hot-fun.webp': 72,
@@ -34,19 +34,15 @@ var SITE_CONFIG = {
     'assets/images/item-dawang-xunshan.webp': 77,
     'assets/images/bingo.webp': 72,
     'assets/images/item-shenmi-heidong.webp': 76,
-    'assets/images/cover-0795399f5593455c95a30a-3172cb4b.webp': 89,
+    'assets/images/cover-0795399f5593455c95a30a-3172cb4b.webp': 91,
     'assets/images/item-yucun-fuli.webp': 78,
     'assets/images/deposit-event-01-welfare.png': 72,
     'assets/images/detail/bc7c0f66cd55435ab1e8845e4b9a481e.webp': 72,
-    'assets/images/cover-bd7c5ddac3754c9e90388f-139dda20.webp': 89,
+    'assets/images/cover-bd7c5ddac3754c9e90388f-139dda20.webp': 91,
     'assets/images/gift-01-weekly-star.webp': 72,
     'assets/images/detail/820b2b250ea14a6dae055c33e5156033.webp': 72
   },
   imageSize: {
-    'assets/images/banner-header.webp': [
-      1500,
-      750
-    ],
     'assets/images/banner-footer-notice.webp': [
       1080,
       5063
@@ -116,10 +112,10 @@ var HERO_CONFIG = {
   interval: 4000,
   slides: [
     {
-      image: 'assets/images/banner-header.webp',
+      image: 'assets/images/hero-0-395e3c06.webp',
       alt: '',
-      title: '',
-      subtitle: '',
+      title: '欢迎回家~',
+      subtitle: '辰兴电竞kook：8333',
       fit: 'contain',
       toCategory: ''
     }
