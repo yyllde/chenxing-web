@@ -149,6 +149,15 @@ var SERVICE_CATEGORIES = [
         contentImage: 'assets/images/content-item-musasxxhdeuh-188035c9.webp',
         prices: [],
         rule: ''
+      },
+      {
+        id: 'item-muy0r2imc0kn',
+        title: '盲盒趣味单',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-muy0r2imc0kn-abf07d09.webp',
+        prices: [],
+        rule: ''
       }
     ],
     cover: 'assets/images/cover-b193a539aad54a1aadf652-0ebd82a8.webp'
