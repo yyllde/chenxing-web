@@ -18,7 +18,7 @@ var SITE_CONFIG = {
   favicon: 'assets/images/favicon-32.png',
   fallbackImage: 'assets/images/default-avatar.svg',
   background: 'linear-gradient(180deg,#fdf2f8 0%,#ffffff 100%)',
-  contentRev: 107,
+  contentRev: 108,
   imageVer: {
     'assets/images/hero-0-186325fb.webp': 107,
     'assets/images/banner-footer-notice.webp': 72,
@@ -187,7 +187,7 @@ var FOOTER_CONFIG = {
     }
   ],
   beian: {
-    text: '',
+    text: '粤ICP备2026160658号',
     url: 'https://beian.miit.gov.cn/'
   },
   copyright: 'Copyright © 2026 辰兴电竞 All Rights Reserved'
