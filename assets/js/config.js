@@ -18,11 +18,11 @@ var SITE_CONFIG = {
   favicon: 'assets/images/favicon-32.png',
   fallbackImage: 'assets/images/default-avatar.svg',
   background: 'linear-gradient(180deg,#fdf2f8 0%,#ffffff 100%)',
-  contentRev: 110,
+  contentRev: 111,
   imageVer: {
     'assets/images/hero-0-186325fb.webp': 107,
-    'assets/images/notice-img-e37c15f4.webp': 110,
-    'assets/images/sheet-qr-639c25b3.webp': 107,
+    'assets/images/notice-img-e37c15f4.webp': 111,
+    'assets/images/sheet-qr-ef849c96.webp': 111,
     'assets/images/favicon-32.png': 72,
     'assets/images/cover-b193a539aad54a1aadf652-0ebd82a8.webp': 107,
     'assets/images/delta-pc-01-hot-fun.webp': 72,
@@ -144,7 +144,7 @@ var SHEET_CONFIG = {
   title: '添加客服下单',
   desc: '扫码或搜索下方公众号，一对一安排',
   qrText: '公众号 / 客服二维码',
-  qrImage: 'assets/images/sheet-qr-639c25b3.webp',
+  qrImage: 'assets/images/sheet-qr-ef849c96.webp',
   wechat: '辰兴电竞',
   copyLabel: '复制公众号',
   closeLabel: '关闭'
