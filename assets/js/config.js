@@ -18,10 +18,10 @@ var SITE_CONFIG = {
   favicon: 'assets/images/favicon-32.png',
   fallbackImage: 'assets/images/default-avatar.svg',
   background: 'linear-gradient(180deg,#fdf2f8 0%,#ffffff 100%)',
-  contentRev: 108,
+  contentRev: 110,
   imageVer: {
     'assets/images/hero-0-186325fb.webp': 107,
-    'assets/images/banner-footer-notice.webp': 72,
+    'assets/images/notice-img-e37c15f4.webp': 110,
     'assets/images/sheet-qr-639c25b3.webp': 107,
     'assets/images/favicon-32.png': 72,
     'assets/images/cover-b193a539aad54a1aadf652-0ebd82a8.webp': 107,
@@ -52,10 +52,6 @@ var SITE_CONFIG = {
     'assets/images/detail/820b2b250ea14a6dae055c33e5156033.webp': 72
   },
   imageSize: {
-    'assets/images/banner-footer-notice.webp': [
-      1080,
-      5063
-    ],
     'assets/images/delta-pc-01-hot-fun.webp': [
       420,
       378
@@ -139,18 +135,18 @@ var NAV_CONFIG = {
 
 /* 四、底部固定按钮 */
 var CTA_CONFIG = {
-  copyLabel: '复制客服微信',
+  copyLabel: '复制公众号微信',
   orderLabel: '点我下单 ♡'
 };
 
 /* 五、下单弹层 */
 var SHEET_CONFIG = {
   title: '添加客服下单',
-  desc: '扫码或搜索下方微信号，一对一安排',
+  desc: '扫码或搜索下方公众号，一对一安排',
   qrText: '公众号 / 客服二维码',
   qrImage: 'assets/images/sheet-qr-639c25b3.webp',
-  wechat: 'ovozZ7i',
-  copyLabel: '复制微信号',
+  wechat: '辰兴电竞',
+  copyLabel: '复制公众号',
   closeLabel: '关闭'
 };
 
@@ -164,7 +160,7 @@ var CONTENT_CONFIG = {
 
 /* 七、底部装饰横幅 */
 var NOTICE_CONFIG = {
-  image: 'assets/images/banner-footer-notice.webp',
+  image: 'assets/images/notice-img-e37c15f4.webp',
   alt: '板板须知',
   title: '板板须知'
 };
