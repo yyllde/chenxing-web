@@ -904,3 +904,178 @@
   .hero { aspect-ratio: 24 / 9; }
   .poster-body { min-height: 0; }
 }
+
+/* ==========================================================================
+   2026-11-03 · P0 新增（票 #9）
+     ① 玩法搜索框 .sub-search
+     ② 玩法分组小标签 .subtab-group
+     ③ 下单须知（文本版）.notice-text
+     ④ 通用显隐工具 .is-hidden
+   —— 全部为新增类名，不改动任何既有选择器，老页面的渲染结果零变化。
+   ========================================================================== */
+
+/* ---- ④ 通用显隐 ----------------------------------------------------------
+   必须 !important：胶囊行吸顶后 .subtabs.is-stuck .subtab 会把 display 改回
+   inline-block（特异性 0,3,1），普通规则压不住，被过滤掉的胶囊会重新冒出来。 */
+.subtab.is-hidden,
+.subtab-group.is-hidden,
+.notice-text .notice-text-body.is-hidden { display: none !important; }
+
+/* ---- ① 玩法搜索框 --------------------------------------------------------
+   放在胶囊行**外面**、正上方：胶囊行吸顶后会收成一行并 overflow-x:auto，
+   输入框塞进去会被裁掉。 */
+.sub-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow-card);
+}
+
+.sub-search-input {
+  flex: 1 1 auto;
+  min-width: 0;                 /* 关键：不加会被 flex 撑破容器 */
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--tx);
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: inherit;
+}
+.sub-search-input::placeholder { color: #b9a7b5; }
+/* iOS Safari 给 type=search 自带一个清除按钮，和我们的重复，去掉 */
+.sub-search-input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+
+.sub-search-clear {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--tx);
+  font-size: 15px;
+  line-height: 24px;
+  cursor: pointer;
+}
+.sub-search-clear[hidden] { display: none; }
+
+.sub-search-count {
+  flex: 0 0 auto;
+  font-size: 12px;
+  color: #9d8baa;
+  white-space: nowrap;
+}
+
+/* ---- ② 玩法分组小标签 ----------------------------------------------------
+   不可点，只是把胶囊分段。横向滚动（吸顶）时缩成 inline-block 一起滚。 */
+.subtab-group {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  margin: 0 2px;
+  border-radius: var(--radius-pill);
+  background: var(--line);
+  color: var(--pink);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* ---- ③ 下单须知（文本版）------------------------------------------------
+   替代「1080×5063 / 290KB 的须知长图」：同样内容用文本 ≈ 几 KB，
+   能被搜索到、能被读屏念出来。 */
+.notice-text {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.notice-text-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.notice-text-head .nt-title {
+  font-size: 16px;
+  color: var(--pink);
+  font-weight: 700;
+}
+
+.notice-text-body {
+  position: relative;
+  color: var(--tx);
+  font-size: 13.5px;
+  line-height: 1.75;
+  /* 折叠到约 9 行，靠 .is-open 展开。
+     内容本来就没超出去时 max-height 不起作用 —— 表面上等于不折叠。
+     要不要显示「展开全部」由 main.js 实测 scrollHeight 决定，不看行数。 */
+  max-height: 15.75em;
+  overflow: hidden;
+}
+.notice-text.is-open .notice-text-body {
+  max-height: none;
+  overflow: visible;
+}
+
+/* 折叠时的渐隐提示：让人看出「下面还有」。
+   只在**真的被截断**（.is-overflow 由 main.js 实测后加上）时才画 ——
+   否则内容没超高也压一层白渐变，最后一行会显得发虚。 */
+.notice-text.is-overflow:not(.is-open) .notice-text-body::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2.6em;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0), var(--card) 85%);
+}
+
+.notice-text-body p { margin: 0 0 6px; }
+.notice-text-body p:last-child { margin-bottom: 0; }
+
+.notice-list {
+  margin: 0 0 6px;
+  padding-left: 18px;
+  list-style: none;
+}
+.notice-list li {
+  position: relative;
+  margin: 2px 0;
+}
+.notice-list li::before {
+  content: '·';
+  position: absolute;
+  left: -14px;
+  color: var(--pink);
+  font-weight: 700;
+}
+
+.notice-text-toggle {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px 0 2px;
+  border: 0;
+  border-top: 1px dashed var(--line);
+  background: transparent;
+  color: var(--pink);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+}
+/* 必须显式写：上面的 display:block 会压掉 hidden 属性的默认 display:none，
+   结果「没有可展开内容」时按钮还杵在那儿。 */
+.notice-text-toggle[hidden] { display: none; }

@@ -3,6 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <!--
+    微信分享卡缓存兜底（2026-11-03 · 票 #9）
+
+    问题：微信把「分享出去的卡片」按 URL 缓存。换了 og:image / og:title 之后，
+          已经聊过的旧链接仍吐旧卡（图 404、指向旧玩法），且我们自己清不掉。
+    做法：进站时若地址里没有 sv 参数，就补一个再用 location.replace 重载一次，
+          换一把全新缓存 key。必须 replace（不能用 pushState 改地址栏）——
+          微信是按「页面加载时的 URL」认这个 key 的。
+
+    两条边界：
+      · 只在微信内生效（/MicroMessenger/）。普通浏览器和搜索引擎一次都不跳，
+        不给任何人多付一次往返。
+      · ★ 换过分享图 / 分享标题之后，把下面的 SHARE_VER 加 1，微信里的卡才会换新。
+  -->
+  <script>
+    (function () {
+      var SHARE_VER = '1';
+      try {
+        if (!/MicroMessenger/i.test(navigator.userAgent)) return;
+        if (new RegExp('(^|[?&])sv=' + SHARE_VER + '(&|$)').test(location.search)) return;
+        var q = location.search.replace(/[?&]sv=[^&]*/g, '');
+        if (q === '?') q = '';
+        location.replace(location.pathname + (q || '') +
+          (q ? '&' : '?') + 'sv=' + SHARE_VER + location.hash);
+      } catch (e) { /* 只是个缓存兜底，失败不影响页面 */ }
+    })();
+  </script>
   <!--
     标题 / 描述 / 图标分两处：
       · 这里写死的这一份是给「不执行 JS 的爬虫」看的 —— 微信 / QQ / 搜索引擎
@@ -29,11 +57,11 @@
   <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon-180.png" />
 
   <!-- 字体：自己托管。原来引外部 CDN 是渲染阻塞的，且会连带下载 4.6 MB 的中文字体 -->
-  <link rel="stylesheet" href="assets/css/fonts.css?v=20261002-2" />
+  <link rel="stylesheet" href="assets/css/fonts.css?v=20261103-1" />
 
   <!-- 样式：base.css 设计变量与通用样式，layout.css 各区块版式 -->
-  <link rel="stylesheet" href="assets/css/base.css?v=20261002-2" />
-  <link rel="stylesheet" href="assets/css/layout.css?v=20261002-2" />
+  <link rel="stylesheet" href="assets/css/base.css?v=20261103-1" />
+  <link rel="stylesheet" href="assets/css/layout.css?v=20261103-1" />
 </head>
 <body>
 
@@ -110,8 +138,8 @@
        3) main.js    渲染与交互
      ==========================================================================
   -->
-  <script src="assets/js/data.js?v=20261002-2"></script>
-  <script src="assets/js/config.js?v=20261002-2"></script>
-  <script src="assets/js/main.js?v=20261002-2"></script>
+  <script src="assets/js/data.js?v=20261103-1"></script>
+  <script src="assets/js/config.js?v=20261103-1"></script>
+  <script src="assets/js/main.js?v=20261103-1"></script>
 </body>
 </html>

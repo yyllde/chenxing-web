@@ -180,7 +180,56 @@
     if (SITE_CONFIG.background) {
       document.documentElement.style.setProperty('--page-bg', SITE_CONFIG.background);
     }
+
+    applyThemeColor();
   }
+
+  /* --------------------------------------------------------------------------
+   * 主题强调色（config.js -> SITE_CONFIG.themeColor，形如 '#ec4899'）
+   *
+   * 设计边界（重要，别扩大）：
+   *   只换「强调色」这一层 —— 主色变量 --pink、品牌渐变、胶囊渐变、两处阴影。
+   *   背景渐变（--page-bg）和紫色副色 --purple 保持原样，否则整体配色会跑掉。
+   *   留空 / 格式不对 → 一行都不改，完全走 base.css 的默认粉。
+   * ------------------------------------------------------------------------ */
+
+  function hexToRgb(hex) {
+    var h = String(hex || '').replace(/^#/, '');
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    if (!/^[0-9a-fA-F]{6}$/.test(h)) return null;
+    return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+  }
+
+  function applyThemeColor() {
+    if (typeof SITE_CONFIG === 'undefined' || !SITE_CONFIG) return;
+
+    var s = document.documentElement.style;
+    var rgb = hexToRgb(SITE_CONFIG.themeColor);
+
+    /* 没配 / 非法 → **把内联覆盖删掉**，让 base.css 的默认粉重新生效。
+       只 return 不清理是不行的：实时同步把 themeColor 删掉后，页面会一直挂着上一次的颜色。
+       （这条是 _scratch-verify-p0-batch.mjs 抓出来的真 bug，别改回去） */
+    if (!rgb) {
+      THEME_VARS.forEach(function (k) { s.removeProperty(k); });
+      return;
+    }
+
+    var hex = '#' + rgb.map(function (n) {
+      return ('0' + n.toString(16)).slice(-2);
+    }).join('');
+    function a(alpha) {
+      return 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + alpha + ')';
+    }
+
+    s.setProperty('--pink', hex);
+    s.setProperty('--gradient-brand', 'linear-gradient(135deg,' + hex + ' 0%,var(--purple) 100%)');
+    s.setProperty('--gradient-subtab', 'linear-gradient(135deg,' + a(0.72) + ',' + hex + ')');
+    s.setProperty('--shadow-card', '0 4px 16px ' + a(0.08));
+    s.setProperty('--shadow-cta', '0 6px 20px ' + a(0.4));
+  }
+
+  /* 主题色会覆盖的全部变量 —— 清理时必须一个不漏，否则会留下半套主题 */
+  var THEME_VARS = ['--pink', '--gradient-brand', '--gradient-subtab', '--shadow-card', '--shadow-cta'];
 
   /* ==========================================================================
    * 2. 顶部主视觉轮播
@@ -430,7 +479,11 @@
     wrap.appendChild(list);
   }
 
-  /* ---- 4.2 分类视图：大标题 + 玩法胶囊 + 海报卡 + 价目表 ---- */
+  /* ---- 4.2 分类视图：大标题 + 搜索 + 玩法胶囊 + 海报卡 + 下单须知 + 价目表 ---- */
+
+  /* 玩法少于这个数就不显示搜索框：三五个胶囊一眼扫完，多个输入框反而是干扰 */
+  var SEARCH_MIN = 6;
+
   function renderCategoryView(wrap, cat) {
     if (!cat) { renderAllView(wrap); return; }
 
@@ -447,23 +500,204 @@
 
     wrap.appendChild(el('div', 'big-title fun', cat.title));
 
-    /* 玩法胶囊按钮 */
+    /* 玩法胶囊按钮（+ 可选搜索框） */
     if (items.length) {
-      var subs = el('div', 'subtabs');
-      items.forEach(function (item) {
-        var on = (state.item === item.id);
-        var b = el('button', 'subtab' + (on ? ' on' : ''), item.title);
-        b.type = 'button';
-        b.addEventListener('click', function () { go(cat.id, item.id); });
-        subs.appendChild(b);
-      });
-      wrap.appendChild(subs);
+      /* 搜索框放在胶囊行**外面**：胶囊行吸顶后会收成一行并横向滚动，
+         输入框塞进去会跟着被裁掉。顺序必须是「搜索框 → 胶囊行」。 */
+      if (items.length >= SEARCH_MIN) wrap.appendChild(buildSearch(items));
+      wrap.appendChild(buildSubtabs(cat, items));
     }
 
     if (!current) return;
 
     wrap.appendChild(buildPoster(cat, current));
+
+    /* 下单须知（文本）。config.js -> CONTENT_CONFIG.orderNotice 留空就整块不渲染 */
+    var noticeText = buildOrderNotice();
+    if (noticeText) {
+      wrap.appendChild(noticeText);
+      /* 必须在挂进 DOM 之后量，否则 scrollHeight / clientHeight 都是 0 */
+      var measure = function () { syncNoticeToggle(noticeText); };
+      if (window.requestAnimationFrame) window.requestAnimationFrame(measure);
+      else measure();
+    }
+
     wrap.appendChild(buildPriceSheet(cat, current));
+  }
+
+  /* 玩法胶囊行。item.group 有值就插一个不可点的分组小标签。
+     没有 group 的老数据 → 渲染结果与改造前**逐字节一致**（不能影响既有验证）。 */
+  function buildSubtabs(cat, items) {
+    var subs = el('div', 'subtabs');
+
+    items.forEach(function (item) {
+      var g = (item.group || '').trim();
+
+      /* 分组小标签：只在「和上一个不同」时插一个，避免重复 */
+      if (g && g !== buildSubtabs.lastGroup) {
+        subs.appendChild(el('span', 'subtab-group', g));
+      }
+      buildSubtabs.lastGroup = g;
+
+      var on = (state.item === item.id);
+      var b = el('button', 'subtab' + (on ? ' on' : ''), item.title);
+      b.type = 'button';
+      /* data-hay：搜索用的匹配串（标题 + 副标题），预先小写去空格，省得每次输入都算 */
+      b.setAttribute('data-hay', (item.title + ' ' + (item.subtitle || '')).toLowerCase().replace(/\s+/g, ''));
+      b.addEventListener('click', function () { go(cat.id, item.id); });
+      subs.appendChild(b);
+    });
+
+    buildSubtabs.lastGroup = '';   /* 下次调用从头算 */
+    return subs;
+  }
+
+  /* 玩法搜索框。
+     ⚠️ 过滤只改 DOM 的显隐（加 is-hidden），**不重绘**：
+        一重绘输入框就被重建、焦点丢失，中文输入法直接报废。 */
+  function buildSearch(items) {
+    var box = el('div', 'sub-search');
+
+    var input = el('input', 'sub-search-input');
+    input.type = 'search';
+    input.id = 'subSearch';
+    input.placeholder = txt('searchPlaceholder', '搜玩法名，比如「保险」「趣味单」');
+    input.setAttribute('autocomplete', 'off');
+    input.setAttribute('aria-label', txt('searchPlaceholder', '搜索玩法'));
+    box.appendChild(input);
+
+    var clearBtn = el('button', 'sub-search-clear', '×');
+    clearBtn.type = 'button';
+    clearBtn.setAttribute('aria-label', txt('searchClear', '清除搜索'));
+    clearBtn.hidden = true;
+    box.appendChild(clearBtn);
+
+    var count = el('span', 'sub-search-count');
+    box.appendChild(count);
+
+    var total = items.length;
+
+    function refresh() {
+      var on = !!input.value.trim();
+      var shown = applySearchFilter(input.value);
+      clearBtn.hidden = !on;
+      box.classList.toggle('is-filtering', on);
+      if (!on) { count.textContent = ''; return; }
+      count.textContent = shown
+        ? shown + ' / ' + total
+        : txt('searchEmpty', '没找到，换个词试试');
+    }
+
+    input.addEventListener('input', refresh);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { input.value = ''; refresh(); }
+    });
+    clearBtn.addEventListener('click', function () {
+      input.value = '';
+      refresh();
+      input.focus();
+    });
+
+    return box;
+  }
+
+  /* 按关键词显隐胶囊，返回可见数量。
+     q 为空 = 全部显示（回到初始状态，一个 class 都不留）。 */
+  function applySearchFilter(q) {
+    var subs = document.querySelector('#content .subtabs');
+    if (!subs) return 0;
+
+    var qq = String(q || '').trim().toLowerCase().replace(/\s+/g, '');
+    var shown = 0;
+
+    /* 分组小标签的显隐要「看它后面那一段胶囊里有没有可见的」，
+       所以一边遍历一边记住当前分组标签和它的命中状态。 */
+    var curGroup = null;
+    var curGroupHit = false;
+
+    Array.prototype.forEach.call(subs.children, function (n) {
+      if (n.classList.contains('subtab')) {
+        var hay = n.getAttribute('data-hay') || '';
+        var hit = !qq || hay.indexOf(qq) >= 0;
+        n.classList.toggle('is-hidden', !hit);
+        if (hit) { shown++; curGroupHit = true; }
+        return;
+      }
+
+      if (n.classList.contains('subtab-group')) {
+        if (curGroup) curGroup.classList.toggle('is-hidden', !!qq && !curGroupHit);
+        curGroup = n;
+        curGroupHit = false;
+      }
+    });
+
+    if (curGroup) curGroup.classList.toggle('is-hidden', !!qq && !curGroupHit);
+    return shown;
+  }
+
+  /* 下单须知（纯文本渲染）。
+     为什么不用 innerHTML：这份文字来自后台，一旦放开 HTML 就等于给后台开了 XSS 口子。
+     支持的写法就三种：空行分段、`- ` / `· ` / `1. ` 开头的列表项、其余按段落。 */
+  function buildOrderNotice() {
+    var content = (typeof CONTENT_CONFIG !== 'undefined' && CONTENT_CONFIG) || {};
+    var text = String(content.orderNotice || '').replace(/\r/g, '').trim();
+    if (!text) return null;
+
+    var box = el('div', 'notice-text anim-up');
+
+    var head = el('div', 'notice-text-head');
+    head.appendChild(el('span', 'nt-title fun', content.orderNoticeTitle || '下单须知'));
+    box.appendChild(head);
+
+    var bodyEl = el('div', 'notice-text-body');
+    var list = null;
+
+    text.split('\n').forEach(function (raw) {
+      var s = raw.replace(/\s+$/, '');
+      if (!s.trim()) { list = null; return; }
+
+      /* 列表项：-  ·  •  *  或者 1.  1、  1) */
+      var m = s.match(/^\s*(?:[-·•*]|\d+\s*[.、)])\s+(.+)$/);
+      if (m) {
+        if (!list) { list = el('ul', 'notice-list'); bodyEl.appendChild(list); }
+        list.appendChild(el('li', null, m[1].trim()));
+        return;
+      }
+
+      list = null;
+      bodyEl.appendChild(el('p', null, s.trim()));
+    });
+
+    box.appendChild(bodyEl);
+
+    /* 「展开全部」按钮**总是**先建出来但默认 hidden，等挂进 DOM 后由
+       syncNoticeToggle() 实测有没有真超出去再决定显不显示。
+       为什么不用「行数 > 5」猜：短句一行能塞两条，行数和实际高度根本对不上
+       —— 猜错的后果是按钮出现了，点下去高度一点没变（这个 bug 被
+       _scratch-verify-p0-batch.mjs 抓到过）。 */
+    var btn = el('button', 'notice-text-toggle', txt('noticeExpand', '展开全部'));
+    btn.type = 'button';
+    btn.hidden = true;
+    btn.addEventListener('click', function () {
+      var open = box.classList.toggle('is-open');
+      btn.textContent = open ? txt('noticeCollapse', '收起') : txt('noticeExpand', '展开全部');
+    });
+    box.appendChild(btn);
+
+    return box;
+  }
+
+  /* 量「须知正文有没有被 max-height 截断」：只在这一刻决定要不要露出展开按钮。
+     截断时才加 is-overflow（CSS 靠它决定要不要画那层渐隐）。 */
+  function syncNoticeToggle(box) {
+    if (!box || !box.parentNode) return;
+    var bodyEl = box.querySelector('.notice-text-body');
+    var btn = box.querySelector('.notice-text-toggle');
+    if (!bodyEl || !btn) return;
+
+    var over = bodyEl.scrollHeight > bodyEl.clientHeight + 2;
+    btn.hidden = !over;
+    box.classList.toggle('is-overflow', over);
   }
 
   /* ==========================================================================
@@ -1085,6 +1319,8 @@
        本文件是 IIFE，外面改 window.SERVICE_CATEGORIES 不会触发重绘，
        所以留一个显式重绘口，验证脚本才能用「构造好的内容」测取图优先级。 */
     window.CX_RERENDER = function () {
+      /* 2026-11-03：先重算站点级变量（主题色等），否则用构造内容测主题色测不到 */
+      applySiteConfig();
       renderTabs();
       renderContent();
       return true;
