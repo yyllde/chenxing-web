@@ -58,7 +58,8 @@ var SERVICE_CATEGORIES = [
         image: null,
         contentImage: 'assets/images/item-dawang-xunshan.webp',
         prices: [],
-        rule: ''
+        rule: '',
+        group: '趣味单'
       },
       {
         id: 'item-mur4l0454k2a',
@@ -67,7 +68,8 @@ var SERVICE_CATEGORIES = [
         image: null,
         contentImage: 'assets/images/bingo.webp',
         prices: [],
-        rule: ''
+        rule: '',
+        group: '趣味单'
       },
       {
         id: 'item-mur4m0c6ysr2',
@@ -76,7 +78,8 @@ var SERVICE_CATEGORIES = [
         image: null,
         contentImage: 'assets/images/item-shenmi-heidong.webp',
         prices: [],
-        rule: ''
+        rule: '',
+        group: '趣味单'
       },
       {
         id: 'item-musano7bp6p3',
@@ -85,7 +88,8 @@ var SERVICE_CATEGORIES = [
         image: null,
         contentImage: 'assets/images/content-item-musano7bp6p3-eedefba3.webp',
         prices: [],
-        rule: ''
+        rule: '',
+        group: '趣味单'
       },
       {
         id: 'item-musaonb08own',
@@ -94,7 +98,8 @@ var SERVICE_CATEGORIES = [
         image: null,
         contentImage: 'assets/images/content-item-musaonb08own-cdf20bbf.webp',
         prices: [],
-        rule: ''
+        rule: '',
+        group: '趣味单'
       },
       {
         id: 'item-musapfjtahwc',
@@ -103,7 +108,8 @@ var SERVICE_CATEGORIES = [
         image: null,
         contentImage: 'assets/images/content-item-musapfjtahwc-233b2017.webp',
         prices: [],
-        rule: ''
+        rule: '',
+        group: '趣味单'
       },
       {
         id: 'item-musaq4bjzh25',
@@ -112,7 +118,8 @@ var SERVICE_CATEGORIES = [
         image: null,
         contentImage: 'assets/images/content-item-musaq4bjzh25-44964013.webp',
         prices: [],
-        rule: ''
+        rule: '',
+        group: '趣味单'
       },
       {
         id: 'item-musaqozgg9b1',
@@ -121,7 +128,8 @@ var SERVICE_CATEGORIES = [
         image: null,
         contentImage: 'assets/images/content-item-musaqozgg9b1-4df837bd.webp',
         prices: [],
-        rule: '所有单子打结默认本单没有问题，投诉售后请在单子结束 24 小时内提出。'
+        rule: '所有单子打结默认本单没有问题，投诉售后请在单子结束 24 小时内提出。',
+        group: '趣味单'
       },
       {
         id: 'item-musarno3awg2',
@@ -130,7 +138,8 @@ var SERVICE_CATEGORIES = [
         image: null,
         contentImage: 'assets/images/content-item-musarno3awg2-a3ab9b17.webp',
         prices: [],
-        rule: ''
+        rule: '',
+        group: '趣味单'
       },
       {
         id: 'item-musas734ulh4',
@@ -139,7 +148,8 @@ var SERVICE_CATEGORIES = [
         image: null,
         contentImage: 'assets/images/content-item-musas734ulh4-b6a5da16.webp',
         prices: [],
-        rule: ''
+        rule: '',
+        group: '趣味单'
       },
       {
         id: 'item-musasxxhdeuh',
@@ -148,7 +158,8 @@ var SERVICE_CATEGORIES = [
         image: null,
         contentImage: 'assets/images/content-item-musasxxhdeuh-188035c9.webp',
         prices: [],
-        rule: ''
+        rule: '',
+        group: '趣味单'
       },
       {
         id: 'item-muy0r2imc0kn',
@@ -157,7 +168,8 @@ var SERVICE_CATEGORIES = [
         image: null,
         contentImage: 'assets/images/content-item-muy0r2imc0kn-abf07d09.webp',
         prices: [],
-        rule: ''
+        rule: '',
+        group: '趣味单'
       }
     ],
     cover: 'assets/images/cover-b193a539aad54a1aadf652-0ebd82a8.webp'
