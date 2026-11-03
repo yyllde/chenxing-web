@@ -18,10 +18,9 @@ var SITE_CONFIG = {
   favicon: 'assets/images/favicon-32.png',
   fallbackImage: 'assets/images/default-avatar.svg',
   background: 'linear-gradient(180deg,#fdf2f8 0%,#ffffff 100%)',
-  contentRev: 114,
+  contentRev: 115,
   imageVer: {
     'assets/images/hero-0-186325fb.webp': 107,
-    'assets/images/notice-img-e37c15f4.webp': 112,
     'assets/images/sheet-qr-ef849c96.webp': 112,
     'assets/images/favicon-32.png': 72,
     'assets/images/cover-b193a539aad54a1aadf652-0ebd82a8.webp': 107,
@@ -182,7 +181,7 @@ var CONTENT_CONFIG = {
 
 /* 七、底部装饰横幅 */
 var NOTICE_CONFIG = {
-  image: 'assets/images/notice-img-e37c15f4.webp',
+  image: '',
   alt: '板板须知',
   title: '板板须知'
 };
