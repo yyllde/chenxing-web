@@ -1063,6 +1063,19 @@
   font-weight: 700;
 }
 
+/* 有序列表（正文里写 `1. ` 开头的行）：保留原编号，不用圆点替代。
+   padding 留得比圆点多一点，两位数编号（10./11./12.）才不会顶到文字上。 */
+.notice-list-num {
+  padding-left: 24px;
+  list-style: decimal;
+}
+.notice-list-num li { position: static; }
+.notice-list-num li::before { content: none; }
+.notice-list-num li::marker {
+  color: var(--pink);
+  font-weight: 700;
+}
+
 .notice-text-toggle {
   display: block;
   width: 100%;

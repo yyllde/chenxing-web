@@ -656,11 +656,21 @@
       var s = raw.replace(/\s+$/, '');
       if (!s.trim()) { list = null; return; }
 
-      /* 列表项：-  ·  •  *  或者 1.  1、  1) */
-      var m = s.match(/^\s*(?:[-·•*]|\d+\s*[.、)])\s+(.+)$/);
+      /* 列表项：`-` `·` `•` `*` → 圆点列表；
+         `1.` `1、` `1)` → **带编号的有序列表**。
+         编号必须保留：注意须知里「连续炸单 3 把」「24H 内」「30w」这些数字是有意义的，
+         把 "3." 抹成圆点会让整条规则读不通（第一版就是这么错的）。 */
+      var m = s.match(/^\s*(?:([-·•*])|(\d+)\s*[.、)])\s+(.+)$/);
       if (m) {
-        if (!list) { list = el('ul', 'notice-list'); bodyEl.appendChild(list); }
-        list.appendChild(el('li', null, m[1].trim()));
+        var isNum = m[2] !== undefined;
+        var tag = isNum ? 'ol' : 'ul';
+        if (!list || list.tagName.toLowerCase() !== tag) {
+          list = el(tag, 'notice-list' + (isNum ? ' notice-list-num' : ''));
+          bodyEl.appendChild(list);
+        }
+        var li = el('li', null, m[3].trim());
+        if (isNum) li.value = Number(m[2]);   /* 编号不连续也照原样显示 */
+        list.appendChild(li);
         return;
       }
 
