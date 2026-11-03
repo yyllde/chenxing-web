@@ -20,7 +20,7 @@
   -->
   <script>
     (function () {
-      var SHARE_VER = '1';
+      var SHARE_VER = '2';
       try {
         if (!/MicroMessenger/i.test(navigator.userAgent)) return;
         if (new RegExp('(^|[?&])sv=' + SHARE_VER + '(&|$)').test(location.search)) return;
@@ -38,19 +38,36 @@
       · assets/js/config.js -> SITE_CONFIG 会在页面打开后再覆盖一遍（后台可改）。
   -->
   <title>辰兴电竞 · 价格表</title>
-  <meta name="description" content="辰兴电竞价格表 - 专业游戏陪玩服务平台" />
-  <meta name="keywords" content="辰兴电竞,游戏陪玩,价格表,三角洲,代练,陪玩" />
+  <meta name="description" content="三角洲护航单 / 趣味单 / 小时陪价目表，24 小时接单，客服一对一安排。" />
+  <meta name="keywords" content="辰兴电竞,游戏陪玩,价格表,三角洲,护航,陪玩,代练" />
 
-  <!-- 分享到微信 / QQ 时的卡片（缩略图必须是 JPG，微信对 WebP 支持不可靠） -->
+  <!--
+    分享到微信 / QQ 时的卡片（2026-11-04 加固 · 票 #9）
+
+    ⚠️ 关键事实：微信的抓取**不执行 JavaScript**，而本站的轮播/价目表都是 JS 渲染的，
+       所以微信能看到的只有这里写死的 title / description / og:image。
+       也正因为如此，**不装微信 JSSDK 时这张卡片同样是可控的** —— 改下面几行就能改。
+
+    三条踩过的坑：
+      1. 缩略图必须 JPG。微信对 WebP 支持不可靠（本站轮播是 webp，指望不上）。
+      2. 图别超过 ~300KB，超了微信经常干脆不抓。这里 500×500 / 78KB。
+      3. 微信按 URL 缓存卡片。换图/换文案后，把上面 <script> 里的 SHARE_VER 加 1，
+         或者像这次一样直接换个新文件名。
+  -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="辰兴电竞" />
   <meta property="og:title" content="辰兴电竞 · 价格表" />
-  <meta property="og:description" content="辰兴电竞价格表 - 专业游戏陪玩服务平台" />
-  <meta property="og:image" content="https://www.chenxingg.cn/assets/images/share-cover.jpg" />
-  <meta property="og:image:width" content="800" />
-  <meta property="og:image:height" content="800" />
+  <meta property="og:description" content="三角洲护航单 / 趣味单 / 小时陪价目表，24 小时接单，客服一对一安排。" />
+  <meta property="og:image" content="https://www.chenxingg.cn/assets/images/share-cover-500.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="500" />
+  <meta property="og:image:height" content="500" />
+  <meta property="og:image:alt" content="辰兴电竞 · 三角洲陪玩价目表" />
+  <meta property="og:locale" content="zh_CN" />
   <meta property="og:url" content="https://www.chenxingg.cn/" />
   <meta name="twitter:card" content="summary_large_image" />
+  <!-- 老式但部分客户端 / 旧版微信仍会读这一条 -->
+  <link rel="image_src" href="https://www.chenxingg.cn/assets/images/share-cover-500.jpg" />
 
   <!-- 网页图标（原来那个是别人家的 logo，已换成辰兴自己的） -->
   <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png" />
