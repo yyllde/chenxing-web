@@ -21,7 +21,7 @@ var ASSETS = 'assets';
 var SERVICE_CATEGORIES = [
   {
     id: 'b193a539aad54a1aadf65294bbd9f742',
-    title: '辰兴·三角洲端游（一店）',
+    title: '辰兴·三角洲端游（1店）',
     subtitle: '基础/趣味玩法',
     items: [
       {
@@ -262,7 +262,7 @@ var SERVICE_CATEGORIES = [
     id: 'cat-mw1eehi6ym5e',
     title: '辰兴·魔王（2店）',
     subtitle: '',
-    cover: null,
+    cover: 'assets/images/cover-cat-mw1eehi6ym5e-c32fe33b.webp',
     items: [
       {
         id: 'item-mw1eeypk3nh7',
