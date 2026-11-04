@@ -47,7 +47,7 @@ var SERVICE_CATEGORIES = [
         title: '新赛季九格保险',
         subtitle: '',
         image: 'assets/images/delta-pc-03-season-insurance.webp',
-        contentImage: 'assets/images/detail/74bb5694459a408d871ebf5bb2a30917.webp',
+        contentImage: 'assets/images/detail/content-74bb5694459a408d871e-17154360.webp',
         prices: [],
         rule: ''
       },
@@ -158,13 +158,40 @@ var SERVICE_CATEGORIES = [
         contentImage: 'assets/images/content-item-muy0r2imc0kn-abf07d09.webp',
         prices: [],
         rule: ''
+      },
+      {
+        id: 'item-mw1dgehzd2sn',
+        title: '七宗罪任务',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-mw1dgehzd2sn-59d4e98a.webp',
+        prices: [],
+        rule: '所有单子打结默认本单没有问题，投诉售后请在单子结束 24 小时内提出。'
+      },
+      {
+        id: 'item-mw1dhiuwt3q6',
+        title: '千万才是开始',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-mw1dhiuwt3q6-3277536e.webp',
+        prices: [],
+        rule: ''
+      },
+      {
+        id: 'item-mw1dkm9ecbk2',
+        title: '节节高升',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-mw1dkm9ecbk2-891a23a5.webp',
+        prices: [],
+        rule: ''
       }
     ],
     cover: 'assets/images/cover-b193a539aad54a1aadf652-0ebd82a8.webp'
   },
   {
     id: '0795399f5593455c95a30a4e93469c65',
-    title: '预存/活动',
+    title: '辰兴·预存/活动',
     subtitle: '',
     items: [
       {
@@ -190,7 +217,7 @@ var SERVICE_CATEGORIES = [
   },
   {
     id: 'bd7c5ddac3754c9e90388f71495c581f',
-    title: '礼物单',
+    title: '辰兴·礼物单',
     subtitle: '',
     items: [
       {
@@ -204,5 +231,22 @@ var SERVICE_CATEGORIES = [
       }
     ],
     cover: 'assets/images/cover-bd7c5ddac3754c9e90388f-139dda20.webp'
+  },
+  {
+    id: 'cat-mw1dcfnzdx43',
+    title: '辰兴·考核 欢迎打手加入~',
+    subtitle: '',
+    cover: 'assets/images/cover-cat-mw1dcfnzdx43-69705f08.webp',
+    items: [
+      {
+        id: 'item-mw1de0iuoh5g',
+        title: '正常打手考核',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-mw1de0iuoh5g-bffb77ae.webp',
+        prices: [],
+        rule: ''
+      }
+    ]
   }
 ];
