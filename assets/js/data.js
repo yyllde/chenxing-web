@@ -199,6 +199,23 @@ var SERVICE_CATEGORIES = [
     cover: 'assets/images/cover-b193a539aad54a1aadf652-0ebd82a8.webp'
   },
   {
+    id: 'cat-mw1eehi6ym5e',
+    title: '辰兴·魔王（2店）',
+    subtitle: '',
+    cover: 'assets/images/cover-cat-mw1eehi6ym5e-c32fe33b.webp',
+    items: [
+      {
+        id: 'item-mw1eeypk3nh7',
+        title: '基础玩法',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-mw1eeypk3nh7-aef48e8e.webp',
+        prices: [],
+        rule: ''
+      }
+    ]
+  },
+  {
     id: '0795399f5593455c95a30a4e93469c65',
     title: '辰兴·预存/活动',
     subtitle: '',
@@ -253,23 +270,6 @@ var SERVICE_CATEGORIES = [
         subtitle: '',
         image: null,
         contentImage: 'assets/images/content-item-mw1de0iuoh5g-bffb77ae.webp',
-        prices: [],
-        rule: ''
-      }
-    ]
-  },
-  {
-    id: 'cat-mw1eehi6ym5e',
-    title: '辰兴·魔王（2店）',
-    subtitle: '',
-    cover: 'assets/images/cover-cat-mw1eehi6ym5e-c32fe33b.webp',
-    items: [
-      {
-        id: 'item-mw1eeypk3nh7',
-        title: '基础玩法',
-        subtitle: '',
-        image: null,
-        contentImage: 'assets/images/content-item-mw1eeypk3nh7-aef48e8e.webp',
         prices: [],
         rule: ''
       }
