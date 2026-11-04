@@ -18,7 +18,7 @@ var SITE_CONFIG = {
   favicon: 'assets/images/favicon-32.png',
   fallbackImage: 'assets/images/default-avatar.svg',
   background: 'linear-gradient(180deg,#fff1f2 0%,#fef3c7 100%)',
-  contentRev: 140,
+  contentRev: 141,
   imageVer: {
     'assets/images/hero-0-186325fb.webp': 107,
     'assets/images/sheet-qr-ef849c96.webp': 112,
@@ -108,7 +108,7 @@ var SITE_CONFIG = {
       560
     ]
   },
-  themeColor: '#111827'
+  themeColor: '#ec4899'
 };
 
 /* 二、顶部主视觉轮播 */
