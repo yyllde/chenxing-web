@@ -17,8 +17,8 @@ var SITE_CONFIG = {
   keywords: '游戏陪玩,电竞,陪玩师,游戏服务',
   favicon: 'assets/images/favicon-32.png',
   fallbackImage: 'assets/images/default-avatar.svg',
-  background: 'linear-gradient(180deg,#fdf2f8 0%,#ffffff 100%)',
-  contentRev: 139,
+  background: 'linear-gradient(180deg,#fff1f2 0%,#fef3c7 100%)',
+  contentRev: 140,
   imageVer: {
     'assets/images/hero-0-186325fb.webp': 107,
     'assets/images/sheet-qr-ef849c96.webp': 112,
@@ -108,7 +108,7 @@ var SITE_CONFIG = {
       560
     ]
   },
-  themeColor: '#ec4899'
+  themeColor: '#111827'
 };
 
 /* 二、顶部主视觉轮播 */
