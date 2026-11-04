@@ -22,7 +22,7 @@ var SERVICE_CATEGORIES = [
   {
     id: 'b193a539aad54a1aadf65294bbd9f742',
     title: '辰兴·三角洲端游（一店）',
-    subtitle: '基础玩法',
+    subtitle: '基础/趣味玩法',
     items: [
       {
         id: 'e2a76c29dabf4760b9bb426b416e0188',
@@ -183,6 +183,15 @@ var SERVICE_CATEGORIES = [
         subtitle: '',
         image: null,
         contentImage: 'assets/images/content-item-mw1dkm9ecbk2-891a23a5.webp',
+        prices: [],
+        rule: ''
+      },
+      {
+        id: 'item-mw1dms6cdhdf',
+        title: '消灭AW',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-mw1dms6cdhdf-00441ef7.webp',
         prices: [],
         rule: ''
       }
