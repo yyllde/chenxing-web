@@ -18,14 +18,14 @@ var SITE_CONFIG = {
   favicon: 'assets/images/favicon-32.png',
   fallbackImage: 'assets/images/default-avatar.svg',
   background: 'linear-gradient(180deg,#fdf2f8 0%,#ffffff 100%)',
-  contentRev: 120,
+  contentRev: 121,
   imageVer: {
     'assets/images/hero-0-186325fb.webp': 107,
     'assets/images/sheet-qr-ef849c96.webp': 112,
     'assets/images/favicon-32.png': 72,
     'assets/images/cover-b193a539aad54a1aadf652-0ebd82a8.webp': 107,
     'assets/images/delta-pc-01-hot-fun.webp': 72,
-    'assets/images/detail/e2a76c29dabf4760b9bb426b416e0188.webp': 72,
+    'assets/images/detail/content-e2a76c29dabf4760b9bb-d2b418d8.webp': 121,
     'assets/images/delta-pc-02-new-hot-fun.webp': 72,
     'assets/images/detail/955db451f862475ba0e17d532fd0a682.webp': 72,
     'assets/images/delta-pc-03-season-insurance.webp': 72,
@@ -54,10 +54,6 @@ var SITE_CONFIG = {
     'assets/images/delta-pc-01-hot-fun.webp': [
       420,
       378
-    ],
-    'assets/images/detail/e2a76c29dabf4760b9bb426b416e0188.webp': [
-      820,
-      1367
     ],
     'assets/images/delta-pc-02-new-hot-fun.webp': [
       420,

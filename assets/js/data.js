@@ -21,7 +21,7 @@ var ASSETS = 'assets';
 var SERVICE_CATEGORIES = [
   {
     id: 'b193a539aad54a1aadf65294bbd9f742',
-    title: '三角洲端游',
+    title: '辰兴·三角洲端游（一店）',
     subtitle: '基础玩法',
     items: [
       {
@@ -29,7 +29,7 @@ var SERVICE_CATEGORIES = [
         title: '基础体验单',
         subtitle: '',
         image: 'assets/images/delta-pc-01-hot-fun.webp',
-        contentImage: 'assets/images/detail/e2a76c29dabf4760b9bb426b416e0188.webp',
+        contentImage: 'assets/images/detail/content-e2a76c29dabf4760b9bb-d2b418d8.webp',
         prices: [],
         rule: ''
       },
