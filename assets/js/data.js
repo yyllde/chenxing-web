@@ -44,10 +44,10 @@ var SERVICE_CATEGORIES = [
       },
       {
         id: '74bb5694459a408d871ebf5bb2a30917',
-        title: '新赛季九格保险',
+        title: '新赛季3x3保险',
         subtitle: '',
         image: 'assets/images/delta-pc-03-season-insurance.webp',
-        contentImage: 'assets/images/detail/content-74bb5694459a408d871e-17154360.webp',
+        contentImage: 'assets/images/detail/content-74bb5694459a408d871e-7362915f.webp',
         prices: [],
         rule: ''
       },

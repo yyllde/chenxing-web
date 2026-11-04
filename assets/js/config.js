@@ -17,8 +17,8 @@ var SITE_CONFIG = {
   keywords: '游戏陪玩,电竞,陪玩师,游戏服务',
   favicon: 'assets/images/favicon-32.png',
   fallbackImage: 'assets/images/default-avatar.svg',
-  background: 'linear-gradient(180deg,#fff1f2 0%,#fef3c7 100%)',
-  contentRev: 141,
+  background: 'linear-gradient(180deg,#fce7f3 0%,#fdf2f8 30%,#f3e8ff 100%)',
+  contentRev: 143,
   imageVer: {
     'assets/images/hero-0-186325fb.webp': 107,
     'assets/images/sheet-qr-ef849c96.webp': 112,
@@ -29,7 +29,7 @@ var SITE_CONFIG = {
     'assets/images/delta-pc-02-new-hot-fun.webp': 72,
     'assets/images/detail/955db451f862475ba0e17d532fd0a682.webp': 72,
     'assets/images/delta-pc-03-season-insurance.webp': 72,
-    'assets/images/detail/content-74bb5694459a408d871e-17154360.webp': 134,
+    'assets/images/detail/content-74bb5694459a408d871e-7362915f.webp': 143,
     'assets/images/item-dawang-xunshan.webp': 77,
     'assets/images/bingo.webp': 72,
     'assets/images/item-shenmi-heidong.webp': 76,
@@ -107,8 +107,7 @@ var SITE_CONFIG = {
       820,
       560
     ]
-  },
-  themeColor: '#ec4899'
+  }
 };
 
 /* 二、顶部主视觉轮播 */
