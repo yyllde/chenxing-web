@@ -257,5 +257,22 @@ var SERVICE_CATEGORIES = [
         rule: ''
       }
     ]
+  },
+  {
+    id: 'cat-mw1eehi6ym5e',
+    title: '辰兴·魔王（2店）',
+    subtitle: '',
+    cover: null,
+    items: [
+      {
+        id: 'item-mw1eeypk3nh7',
+        title: '基础玩法',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-mw1eeypk3nh7-aef48e8e.webp',
+        prices: [],
+        rule: ''
+      }
+    ]
   }
 ];
