@@ -557,10 +557,11 @@
   margin-top: 16px;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  /* 沿用 dduniao 页脚的紫色渐变识别 */
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #fff;
-  box-shadow: var(--shadow-poster);
+  /* 浅色卡片，与站内其它卡片一致的观感（2026-11-04 去掉 dduniao 紫色渐变） */
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--tx);
+  box-shadow: var(--shadow-card);
 }
 
 .footer-inner {
@@ -573,30 +574,29 @@
 .footer .highlight {
   font-size: 17px;
   font-weight: 900;
-  color: var(--dd-gold);
-  text-shadow: 0 2px 6px rgba(0, 0, 0, .28);
+  color: var(--pink);
 }
 .footer .features {
   font-weight: 700;
-  color: #ffeb3b;
+  color: var(--dd-purple);
   font-size: 13px;
 }
 .footer .desc,
 .footer .vip {
-  background: rgba(255, 255, 255, .14);
+  background: #fff5fa;
   border-radius: var(--radius-md);
   padding: 14px 16px;
   line-height: 1.75;
   text-align: left;
 }
 .footer .vip {
-  background: rgba(255, 215, 0, .2);
-  border: 1px solid rgba(255, 215, 0, .38);
+  background: #fffaf0;
+  border: 1px solid #fbe3b8;
 }
 .footer .closing {
   font-size: 15px;
   font-weight: 900;
-  color: var(--dd-gold);
+  color: var(--pink);
   margin-top: 16px;
 }
 
@@ -606,42 +606,42 @@
   gap: 10px;
   margin-top: 20px;
   padding-top: 18px;
-  border-top: 1px solid rgba(255, 255, 255, .26);
+  border-top: 1px solid var(--line);
 }
 .footer-contact {
-  background: rgba(255, 255, 255, .12);
-  border: 1px solid rgba(255, 255, 255, .16);
+  background: #fff5fa;
+  border: 1px solid var(--line);
   border-radius: var(--radius-md);
   padding: 12px 10px;
   transition: all .18s ease;
 }
 .footer-contact:hover {
-  background: rgba(255, 255, 255, .2);
+  background: #fdeaf4;
   transform: translateY(-3px);
 }
-.footer-contact .k { display: block; font-size: 11px; opacity: .85; }
+.footer-contact .k { display: block; font-size: 11px; color: var(--tx2); }
 .footer-contact .v {
   display: block;
   margin-top: 4px;
   font-size: 14px;
   font-weight: 900;
-  color: var(--dd-gold);
+  color: var(--pink);
 }
 
 .footer-beian {
   margin-top: 20px;
   padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, .2);
+  border-top: 1px solid var(--line);
   font-size: 11px;
 }
 .footer-beian a {
-  color: rgba(255, 255, 255, .8);
+  color: var(--tx2);
   transition: color .18s ease;
 }
-.footer-beian a:hover { color: var(--dd-gold); text-decoration: underline; }
+.footer-beian a:hover { color: var(--pink); text-decoration: underline; }
 .footer-copy {
   margin-top: 6px;
-  color: rgba(255, 255, 255, .68);
+  color: var(--tx2);
 }
 
 /* ==========================================================================
