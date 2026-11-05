@@ -182,7 +182,7 @@ var SERVICE_CATEGORIES = [
         title: '节节高升',
         subtitle: '',
         image: null,
-        contentImage: 'assets/images/content-item-mw1dkm9ecbk2-891a23a5.webp',
+        contentImage: 'assets/images/content-item-mw1dkm9ecbk2-b3be9486.webp',
         prices: [],
         rule: ''
       },
