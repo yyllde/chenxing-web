@@ -18,7 +18,7 @@ var SITE_CONFIG = {
   favicon: 'assets/images/favicon-32.png',
   fallbackImage: 'assets/images/default-avatar.svg',
   background: 'linear-gradient(180deg,#fce7f3 0%,#fdf2f8 30%,#f3e8ff 100%)',
-  contentRev: 145,
+  contentRev: 147,
   imageVer: {
     'assets/images/hero-0-186325fb.webp': 107,
     'assets/images/sheet-qr-ef849c96.webp': 112,
@@ -46,6 +46,7 @@ var SITE_CONFIG = {
     'assets/images/content-item-mw1dhiuwt3q6-3277536e.webp': 134,
     'assets/images/content-item-mw1dkm9ecbk2-b3be9486.webp': 145,
     'assets/images/content-item-mw1dms6cdhdf-00441ef7.webp': 134,
+    'assets/images/content-item-mwhi5nvcrx8h-a107da04.webp': 147,
     'assets/images/cover-cat-mw1eehi6ym5e-c32fe33b.webp': 134,
     'assets/images/content-item-mw1eeypk3nh7-aef48e8e.webp': 134,
     'assets/images/cover-0795399f5593455c95a30a-3172cb4b.webp': 107,

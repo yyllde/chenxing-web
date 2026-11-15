@@ -194,6 +194,15 @@ var SERVICE_CATEGORIES = [
         contentImage: 'assets/images/content-item-mw1dms6cdhdf-00441ef7.webp',
         prices: [],
         rule: ''
+      },
+      {
+        id: 'item-mwhi5nvcrx8h',
+        title: '大红曼德尔砖',
+        subtitle: '',
+        image: null,
+        contentImage: 'assets/images/content-item-mwhi5nvcrx8h-a107da04.webp',
+        prices: [],
+        rule: ''
       }
     ],
     cover: 'assets/images/cover-b193a539aad54a1aadf652-0ebd82a8.webp'
