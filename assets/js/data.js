@@ -200,7 +200,7 @@ var SERVICE_CATEGORIES = [
         title: '大红曼德尔砖',
         subtitle: '',
         image: null,
-        contentImage: 'assets/images/content-item-mwhi5nvcrx8h-a107da04.webp',
+        contentImage: 'assets/images/content-item-mwhi5nvcrx8h-d4e84e1d.webp',
         prices: [],
         rule: ''
       }
